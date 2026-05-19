@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart2, Clock, Home, FlaskConical, Search, GitCompareArrows } from "lucide-react";
+import { BarChart2, Clock, Home, FlaskConical, Search, GitCompareArrows, Flag, Globe } from "lucide-react";
 
 const navItems = [
   { href: "/",           label: "หน้าหลัก",    icon: Home },
@@ -10,6 +10,8 @@ const navItems = [
   { href: "/checker",    label: "เช็คเลข",      icon: Search },
   { href: "/analysis",   label: "Triple Score", icon: FlaskConical },
   { href: "/leaderboard",label: "Backtest",     icon: GitCompareArrows },
+  { href: "/lao",        label: "หวยลาว",       icon: Flag },
+  { href: "/hanoi",      label: "หวยฮานอย",     icon: Globe },
 ];
 
 export default function Navbar() {

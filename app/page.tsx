@@ -7,7 +7,7 @@ import TrackRecord from "@/components/TrackRecord";
 import HotColdNumbers from "@/components/HotColdNumbers";
 import MonthlyPattern from "@/components/MonthlyPattern";
 import Link from "next/link";
-import { BarChart2, Search, FlaskConical, Clock } from "lucide-react";
+import { BarChart2, Search, FlaskConical, Clock, Flag, Globe } from "lucide-react";
 
 const latest = lotteryData[0];
 const prev = lotteryData[1];
@@ -122,6 +122,31 @@ export default function Home() {
             <p className="text-xs text-slate-600">Lo Shu · RSI · Fibonacci</p>
           </div>
         </Link>
+      </section>
+
+      {/* ─── หวยต่างประเทศ ────────────────────────────────────── */}
+      <section className="space-y-3">
+        <p className="text-xs text-slate-600 uppercase tracking-widest">หวยต่างประเทศ</p>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Link href="/lao"
+            className="flex items-center gap-3 bg-[#1A1D2E] border border-[#2A2D3E] hover:border-[#C9A84C]/40 rounded-xl p-4 transition-colors group">
+            <Flag size={20} className="text-[#C9A84C] shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-slate-300 group-hover:text-slate-200">หวยลาวพัฒนา</p>
+              <p className="text-xs text-slate-600">ออกทุกวัน จันทร์–เสาร์ 20:30 น.</p>
+            </div>
+            <span className="ml-auto text-xs text-slate-700 group-hover:text-slate-500">→</span>
+          </Link>
+          <Link href="/hanoi"
+            className="flex items-center gap-3 bg-[#1A1D2E] border border-[#2A2D3E] hover:border-[#C9A84C]/40 rounded-xl p-4 transition-colors group">
+            <Globe size={20} className="text-[#C9A84C] shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-slate-300 group-hover:text-slate-200">หวยฮานอย</p>
+              <p className="text-xs text-slate-600">ออกทุกวัน 18:10 น.</p>
+            </div>
+            <span className="ml-auto text-xs text-slate-700 group-hover:text-slate-500">→</span>
+          </Link>
+        </div>
       </section>
 
       {/* ─── Share ────────────────────────────────────────────── */}
