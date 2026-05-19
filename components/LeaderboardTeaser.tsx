@@ -73,7 +73,7 @@ export default function LeaderboardTeaser() {
         <div className="flex items-center gap-2">
           <Clapperboard size={16} className="text-[#C9A84C]" />
           <div>
-            <h2 className="text-base font-semibold text-slate-300">Story Board</h2>
+            <h2 className="text-base font-semibold text-slate-300">Backtest ย้อนหลัง</h2>
             <p className="text-xs text-slate-600">Phase vs ผลจริง — 3 งวดล่าสุด</p>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function LeaderboardTeaser() {
 
       <Link href="/leaderboard"
         className="block w-full text-center bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-bold py-2 rounded-xl hover:bg-[#C9A84C]/20 transition-colors">
-        ดู Story Board เต็ม 10 งวด →
+        ดู Backtest เต็ม 10 งวด →
       </Link>
     </section>
   );

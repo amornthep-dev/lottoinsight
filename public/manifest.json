@@ -1,0 +1,42 @@
+{
+  "name": "LottoInsight — วิเคราะห์สถิติหวยไทย",
+  "short_name": "LottoInsight",
+  "description": "สถิติหวยไทย 10 ปี · Phase System · Triple Score · Signal Convergence",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1117",
+  "theme_color": "#C9A84C",
+  "orientation": "portrait-primary",
+  "lang": "th",
+  "categories": ["entertainment", "finance"],
+  "icons": [
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "เช็คเลข",
+      "short_name": "เช็คเลข",
+      "description": "วิเคราะห์เลขที่ต้องการ",
+      "url": "/checker",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "กลุ่มเลขสถิติสูง",
+      "short_name": "Phase",
+      "description": "ดูกลุ่มเลขสถิติสูงประจำงวด",
+      "url": "/#phase",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

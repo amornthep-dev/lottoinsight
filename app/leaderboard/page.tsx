@@ -194,30 +194,32 @@ export default function LeaderboardPage() {
       <section>
         <h1 className="text-2xl font-bold text-slate-200 flex items-center gap-2">
           <FlaskConical size={24} className="text-[#C9A84C]" />
-          Triple Score V2 — Story Board
+          Backtest ย้อนหลัง — Triple Score
         </h1>
         <p className="text-slate-500 mt-1 text-sm">
-          Backtest {bt.total} งวดล่าสุด · คำนวณด้วยข้อมูลก่อนงวดนั้นเท่านั้น ·{" "}
-          <span className="text-slate-600">อัปเดตอัตโนมัติทุกงวดใหม่</span>
+          ทดสอบระบบกับผลจริง {bt.total} งวดล่าสุด · คำนวณด้วยข้อมูลก่อนงวดนั้นเท่านั้น ·{" "}
+          <span className="text-slate-600">อัปเดตอัตโนมัติทุกงวด</span>
         </p>
       </section>
 
       {/* Backtest clarification banner */}
       <div className="rounded-2xl overflow-hidden border border-blue-500/20">
-        <div className="bg-blue-500/8 px-5 py-3 flex items-start gap-3">
-          <span className="text-xl shrink-0">📋</span>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-slate-200">
-              นี่คือ <span className="text-blue-400">Backtest ย้อนหลัง</span> — ไม่ใช่ prediction งวดนี้
-            </p>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              ทดสอบระบบกับผลจริง {bt.total} งวดที่ผ่านมา เพื่อแสดงว่าแต่ละ method แม่นแค่ไหน
-              ในข้อมูลจริง — ใช้เป็นเกณฑ์ประเมินความน่าเชื่อถือของระบบ
-            </p>
+        <div className="bg-blue-500/8 px-5 py-4 space-y-3">
+          <div className="flex items-start gap-3">
+            <span className="text-xl shrink-0">📋</span>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-slate-200">
+                นี่คือ <span className="text-blue-400">Backtest ย้อนหลัง</span> — ไม่ใช่ prediction งวดนี้
+              </p>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                ทดสอบระบบกับผลจริง {bt.total} งวดที่ผ่านมา เพื่อแสดงว่าแต่ละ method แม่นแค่ไหน
+                ในข้อมูลจริง — ใช้เป็นเกณฑ์ประเมินความน่าเชื่อถือของระบบ
+              </p>
+            </div>
           </div>
           <Link
             href="/analysis"
-            className="shrink-0 text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-3 py-1.5 rounded-lg hover:bg-[#C9A84C]/20 transition-colors whitespace-nowrap"
+            className="inline-block text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-3 py-1.5 rounded-lg hover:bg-[#C9A84C]/20 transition-colors"
           >
             ดู Triple Score งวดนี้ →
           </Link>

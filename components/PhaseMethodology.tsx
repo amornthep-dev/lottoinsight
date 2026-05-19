@@ -336,7 +336,7 @@ export default function PhaseMethodology({ phaseId, selected3, selected2, phaseC
       <button onClick={() => setOpen(!open)}
         className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors">
         <FlaskConical size={14} />
-        {open ? "ซ่อนวิธีคำนวณ" : "🔬 ดูวิธีคำนวณ — เราคิดเลขนี้ยังไง?"}
+        {open ? "ซ่อนวิธีคำนวณ" : "🔬 ดูวิธีคำนวณ"}
         {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
       </button>
 

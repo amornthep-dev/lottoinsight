@@ -26,10 +26,18 @@ export default function ShareCard() {
 คำนวณจากสถิติย้อนหลัง ≠ การทำนาย
 🌐 lottoinsight.com`;
 
+  const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleNativeShare = async () => {
+    try {
+      await navigator.share({ title: "LottoInsight — เลขแนะนำ", text: shareText, url: "https://lottoinsight.com" });
+    } catch { /* user cancelled */ }
   };
 
   const handleLine = () => {
@@ -44,12 +52,14 @@ export default function ShareCard() {
   return (
     <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={canNativeShare ? handleNativeShare : () => setOpen(!open)}
         className="w-full flex items-center justify-between p-5 hover:bg-[#2A2D3E]/20 transition-colors">
-        <div className="flex items-center gap-2">
-          <Share2 size={16} className="text-[#C9A84C]" />
-          <span className="text-sm font-semibold text-slate-300">แชร์เลขแนะนำ</span>
-          <span className="text-xs text-slate-600">LINE · Facebook · Copy</span>
+        <div className="flex items-center gap-2 min-w-0">
+          <Share2 size={16} className="text-[#C9A84C] shrink-0" />
+          <span className="text-sm font-semibold text-slate-300 whitespace-nowrap">แชร์เลขแนะนำ</span>
+          <span className="text-xs text-slate-600 whitespace-nowrap">
+            {canNativeShare ? "แตะเพื่อแชร์" : "LINE · Facebook · Copy"}
+          </span>
         </div>
         <span className="text-slate-600 text-sm">{open ? "▲" : "▼"}</span>
       </button>

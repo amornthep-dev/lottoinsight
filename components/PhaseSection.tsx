@@ -1,8 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Lock, ChevronRight, AlertTriangle, TrendingDown, CheckCircle } from "lucide-react";
+import { Lock, ChevronRight, AlertTriangle, TrendingDown, CheckCircle, CalendarDays } from "lucide-react";
 import { getPhase1, getPhase2, getPhase3, phaseAlgorithmDesc } from "@/lib/lottery-stats";
 import PhaseMethodology from "@/components/PhaseMethodology";
+import lotteryData from "@/data/lottery.json";
+
+const THAI_MONTHS = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+  "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+
+function getNextDrawLabel(): string {
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+  const be = y + 543;
+  if (d < 16 && new Date(y, m, 16, 9, 30) > now)
+    return `16 ${THAI_MONTHS[m]} ${be}`;
+  const nm = m + 1 > 11 ? 0 : m + 1;
+  const ny = nm === 0 ? y + 1 : y;
+  return `1 ${THAI_MONTHS[nm]} ${ny + 543}`;
+}
 
 function getNextDrawDate(): Date {
   const now = new Date();
@@ -41,11 +56,21 @@ const phases = [
   },
 ];
 
+const PREVIEW_COUNT = 8;
+
 export default function PhaseSection() {
   const [daysLeft, setDaysLeft] = useState(0);
   const [hoursLeft, setHoursLeft] = useState(0);
   const [currentPhase, setCurrentPhase] = useState(1);
   const [mounted, setMounted] = useState(false);
+  const [expandedPhases, setExpandedPhases] = useState<Set<number>>(new Set());
+
+  const toggleExpand = (phaseId: number) =>
+    setExpandedPhases(prev => {
+      const next = new Set(prev);
+      if (next.has(phaseId)) next.delete(phaseId); else next.add(phaseId);
+      return next;
+    });
 
   useEffect(() => {
     setMounted(true);
@@ -63,17 +88,32 @@ export default function PhaseSection() {
     return () => clearInterval(t);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) return (
+    <section className="space-y-4 animate-pulse">
+      <div className="h-7 w-48 bg-[#1A1D2E] rounded-lg" />
+      <div className="h-4 w-64 bg-[#1A1D2E] rounded" />
+      <div className="h-[160px] bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl" />
+    </section>
+  );
 
   const nextLocked = phases.find((p) => p.id === currentPhase + 1);
   const daysUntilNext = nextLocked ? Math.max(0, daysLeft - nextLocked.triggerDays) : null;
 
+  const nextDrawLabel = getNextDrawLabel();
+  const latestDate = lotteryData[0]?.dateDisplay ?? "";
+
   return (
     <section className="space-y-4">
-      <div>
-        <h2 className="text-lg font-semibold text-slate-300">📊 กลุ่มเลขสถิติสูงประจำงวด</h2>
-        <p className="text-sm text-slate-500 mt-1">
-          วิเคราะห์จากสถิติย้อนหลัง 100 งวด · แต่ละ Phase คัดกรองด้วยเกณฑ์ต่างกัน — ข้อมูลประกอบการตัดสินใจ ไม่ใช่การทำนาย
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <h2 className="text-lg font-semibold text-slate-300">📊 กลุ่มเลขสถิติสูงประจำงวด</h2>
+          <div className="flex items-center gap-1.5 bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-lg px-3 py-1.5 shrink-0">
+            <CalendarDays size={13} className="text-[#C9A84C]" />
+            <span className="text-xs font-bold text-[#C9A84C]">งวด {nextDrawLabel}</span>
+          </div>
+        </div>
+        <p className="text-xs text-slate-600">
+          วิเคราะห์จาก {lotteryData.length} งวด · ข้อมูลล่าสุด {latestDate}
         </p>
       </div>
 
@@ -110,57 +150,82 @@ export default function PhaseSection() {
                 className={`border ${p.border} ${p.bg} rounded-2xl p-6 space-y-5 ${isCurrent ? "ring-1 ring-current/10" : "opacity-75"}`}>
 
                 {/* Header */}
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${p.badge}`}>{p.label}</span>
-                      {isCurrent
-                        ? <span className="text-xs bg-[#C9A84C] text-[#0F1117] px-2 py-0.5 rounded-full font-bold animate-pulse">● ปัจจุบัน</span>
-                        : <span className="text-xs bg-slate-700 text-slate-400 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle size={10} /> เปิดแล้ว</span>
-                      }
-                    </div>
-                    <p className="text-xs text-slate-600 mt-0.5">Algorithm: {phaseAlgorithmDesc[p.id]}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${p.badge}`}>{p.label}</span>
+                    {isCurrent
+                      ? <span className="text-xs bg-[#C9A84C] text-[#0F1117] px-2 py-0.5 rounded-full font-bold animate-pulse">● ปัจจุบัน</span>
+                      : <span className="text-xs bg-slate-700 text-slate-400 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle size={10} /> เปิดแล้ว</span>
+                    }
+                    <span className={`text-lg font-bold whitespace-nowrap ${isCurrent ? "text-slate-200" : "text-slate-600"}`}>{p.sets} ชุด</span>
                   </div>
-                  <span className={`text-2xl font-bold ${isCurrent ? "text-slate-200" : "text-slate-600"}`}>{p.sets} ชุด</span>
                 </div>
+                <p className="text-xs text-slate-600 -mt-2">Algorithm: {phaseAlgorithmDesc[p.id]}</p>
 
-                {/* Disclaimer */}
+                {/* Disclaimer — compact */}
                 {isCurrent && (
-                  <div className="bg-[#0F1117] border border-yellow-600/20 rounded-xl p-4 flex gap-3">
-                    <AlertTriangle size={15} className="text-yellow-500 shrink-0 mt-0.5" />
-                    <p className="text-xs text-slate-400 leading-relaxed">
-                      <span className="text-yellow-400 font-semibold">ข้อมูลวิเคราะห์สถิติ — </span>
-                      คัดกรองจากสถิติย้อนหลัง 100 งวด{" "}
-                      <span className="text-slate-300 font-semibold">ไม่ใช่การทำนาย</span>{" "}
-                      ใช้เป็นข้อมูลประกอบการตัดสินใจเท่านั้น ผลจริงขึ้นอยู่กับโชค
-                      <span className="text-red-400"> การซื้อสลากมีความเสี่ยง คุณอาจสูญเสียเงินทั้งหมด</span>
+                  <div className="flex items-center gap-2 bg-yellow-500/5 border border-yellow-600/20 rounded-lg px-3 py-2">
+                    <AlertTriangle size={12} className="text-yellow-500 shrink-0" />
+                    <p className="text-[11px] text-slate-500 leading-tight">
+                      <span className="text-yellow-500 font-medium">สถิติย้อนหลังเท่านั้น</span>
+                      {" "}— ไม่ใช่การทำนาย · ผลจริงขึ้นอยู่กับโชค ·{" "}
+                      <span className="text-red-400/70">มีความเสี่ยงสูญเสียเงิน</span>
                     </p>
                   </div>
                 )}
 
                 {/* Numbers */}
-                <div className="space-y-4">
-                  {[
-                    { label: "เลขท้าย 3 ตัว", nums: data.prize3back },
-                    { label: "เลขท้าย 2 ตัว", nums: data.prize2back },
-                  ].map(({ label, nums }) => (
-                    <div key={label}>
-                      <div className="flex items-center gap-2 mb-2">
-                        <TrendingDown size={13} className="text-slate-500" />
-                        <p className="text-sm font-medium text-slate-300">{label}</p>
-                        <span className="text-xs text-slate-600">({nums.length} ชุด)</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {nums.map((n, i) => (
-                          <span key={i}
-                            className={`font-mono font-bold text-xl px-3 py-1.5 bg-[#0F1117] rounded-xl border border-[#2A2D3E] ${isCurrent ? p.numColor : "text-slate-600"}`}>
-                            {n}
-                          </span>
-                        ))}
-                      </div>
+                {(() => {
+                  const isExpanded = expandedPhases.has(p.id);
+                  return (
+                    <div className="space-y-3">
+                      {[
+                        { label: "ท้าย 3 ตัว", nums: data.prize3back },
+                        { label: "ท้าย 2 ตัว", nums: data.prize2back },
+                      ].map(({ label, nums }) => {
+                        const visible = isExpanded ? nums : nums.slice(0, PREVIEW_COUNT);
+                        const hasMore = nums.length > PREVIEW_COUNT;
+                        return (
+                          <div key={label}>
+                            <div className="flex items-center gap-2 mb-2">
+                              <TrendingDown size={12} className="text-slate-600" />
+                              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</p>
+                              <span className="text-[10px] text-slate-700 bg-[#0F1117] px-1.5 py-0.5 rounded">{nums.length} ชุด</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5">
+                              {visible.map((n, i) => (
+                                <span key={i}
+                                  className={`font-mono font-bold text-sm px-2.5 py-1 bg-[#0F1117] rounded-lg border ${
+                                    isCurrent
+                                      ? `border-current/30 ${p.numColor}`
+                                      : "border-[#2A2D3E] text-slate-600"
+                                  }`}>
+                                  {n}
+                                </span>
+                              ))}
+                              {hasMore && !isExpanded && (
+                                <button
+                                  onClick={() => toggleExpand(p.id)}
+                                  className={`font-mono text-sm px-2.5 py-1 bg-[#0F1117] rounded-lg border border-dashed ${
+                                    isCurrent ? `border-current/20 ${p.numColor} opacity-60` : "border-[#2A2D3E] text-slate-700"
+                                  } hover:opacity-100 transition-opacity`}>
+                                  +{nums.length - PREVIEW_COUNT}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {expandedPhases.has(p.id) && (
+                        <button
+                          onClick={() => toggleExpand(p.id)}
+                          className="text-xs text-slate-600 hover:text-slate-400 transition-colors mt-1">
+                          ▲ ย่อลง
+                        </button>
+                      )}
                     </div>
-                  ))}
-                </div>
+                  );
+                })()}
 
                 {/* ปุ่มดูวิธีคำนวณ */}
                 <PhaseMethodology

@@ -333,10 +333,10 @@ export default function StatisticsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
               tab === t.id
                 ? "bg-[#C9A84C] text-[#0F1117]"
                 : "bg-[#1A1D2E] text-slate-400 border border-[#2A2D3E] hover:border-[#C9A84C]/40 hover:text-slate-300"

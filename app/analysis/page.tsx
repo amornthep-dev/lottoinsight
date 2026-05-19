@@ -599,21 +599,38 @@ export default function AnalysisPage() {
         <p className="text-slate-500 text-sm">
           วิเคราะห์ 5 มิติพร้อมกัน — เลขที่ผ่านทุก method คือเลขที่โดดเด่นเชิงสถิติที่สุด
         </p>
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 mt-3 scrollbar-none">
           {[
-            { icon: "🟥", label: "Lo Shu Grid", sub: "ตำแหน่งในตารางมังกรจีน", color: "border-red-500/30 text-red-400" },
-            { icon: "📈", label: "RSI Score", sub: "ดัชนีร้อน-เย็นแบบ stock", color: "border-emerald-500/30 text-emerald-400" },
-            { icon: "🌀", label: "Fibonacci Flow", sub: "การไหลด้วย φ = 1.618", color: "border-purple-500/30 text-purple-400" },
-            { icon: "🔗", label: "Kaprekar Chain", sub: "ห่วงโซ่ตัวเลขแบบซ้ำ", color: "border-pink-500/30 text-pink-400" },
-            { icon: "🔀", label: "Digit Transition", sub: "Markov Chain จากข้อมูลจริง", color: "border-teal-500/30 text-teal-400" },
+            { icon: "🟥", label: "Lo Shu Grid",    sub: "ตำแหน่งในตารางมังกรจีน",  color: "border-red-500/30 text-red-400"       },
+            { icon: "📈", label: "RSI Score",       sub: "ดัชนีร้อน-เย็นแบบ stock", color: "border-emerald-500/30 text-emerald-400"},
+            { icon: "🌀", label: "Fibonacci Flow",  sub: "การไหลด้วย φ = 1.618",    color: "border-purple-500/30 text-purple-400" },
+            { icon: "🔗", label: "Kaprekar Chain",  sub: "ห่วงโซ่ตัวเลขแบบซ้ำ",    color: "border-pink-500/30 text-pink-400"     },
+            { icon: "🔀", label: "Digit Transition",sub: "Markov Chain จากข้อมูลจริง",color: "border-teal-500/30 text-teal-400"   },
           ].map(({ icon, label, sub, color }) => (
-            <div key={label} className={`bg-[#1A1D2E] border ${color} rounded-xl px-4 py-2`}>
-              <p className="text-sm font-bold text-slate-300">{icon} {label}</p>
-              <p className="text-[10px] text-slate-600">{sub}</p>
+            <div key={label} className={`shrink-0 bg-[#1A1D2E] border ${color} rounded-xl px-4 py-2`}>
+              <p className="text-sm font-bold text-slate-300 whitespace-nowrap">{icon} {label}</p>
+              <p className="text-[10px] text-slate-600 whitespace-nowrap">{sub}</p>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Jump Nav */}
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
+        {[
+          { href: "#loshu",      label: "🟥 Lo Shu"    },
+          { href: "#rsi",        label: "📈 RSI"        },
+          { href: "#fibonacci",  label: "🌀 Fibonacci"  },
+          { href: "#kaprekar",   label: "🔗 Kaprekar"   },
+          { href: "#transition", label: "🔀 Transition" },
+          { href: "#triple",     label: "🏆 Triple Score" },
+        ].map(({ href, label }) => (
+          <a key={href} href={href}
+            className="shrink-0 whitespace-nowrap text-xs px-3 py-1.5 rounded-full bg-[#1A1D2E] border border-[#2A2D3E] text-slate-400 hover:border-[#C9A84C]/40 hover:text-slate-200 transition-colors">
+            {label}
+          </a>
+        ))}
+      </div>
 
       {/* Context Banner — งวดที่กำลังคำนวณ */}
       <div className="rounded-2xl overflow-hidden border border-[#C9A84C]/30">
@@ -644,17 +661,17 @@ export default function AnalysisPage() {
         </div>
       </div>
 
-      {/* 5 Method Cards */}
-      <div className="grid md:grid-cols-1 gap-5">
-        <LoShuGridDisplay />
-        <RSIDisplay />
-        <FibDisplay />
-        <KaprekarDisplay />
-        <TransitionDisplay />
+      {/* 5 Method Cards — 2 columns on large screens */}
+      <div className="grid lg:grid-cols-2 gap-5">
+        <div id="loshu"><LoShuGridDisplay /></div>
+        <div id="rsi"><RSIDisplay /></div>
+        <div id="fibonacci"><FibDisplay /></div>
+        <div id="kaprekar"><KaprekarDisplay /></div>
+        <div id="transition" className="lg:col-span-2"><TransitionDisplay /></div>
       </div>
 
       {/* Triple Score — 2 ตัว */}
-      <TripleScoreBoard />
+      <div id="triple"><TripleScoreBoard /></div>
 
       {/* Triple Score — 3 ตัว */}
       <TripleScore3Board />

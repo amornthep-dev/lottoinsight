@@ -99,6 +99,109 @@ function analyzeNumber(num: string, digits: 2 | 3) {
   };
 }
 
+// ─── Verdict ──────────────────────────────────────────────────────
+type VerdictKey = "strong" | "moderate" | "weak" | "never";
+
+function getVerdictKey(r: ReturnType<typeof analyzeNumber>): VerdictKey {
+  if (r.neverAppeared) return "never";
+  if (r.score >= 65 && (r.tripleCount >= 2 || r.r12 >= 2)) return "strong";
+  if (r.score >= 40) return "moderate";
+  return "weak";
+}
+
+const VERDICT_CONFIG: Record<VerdictKey, {
+  icon: string; label: string; sublabel: string;
+  border: string; bg: string; color: string;
+}> = {
+  strong:   { icon: "🟢", label: "สัญญาณดี — น่าพิจารณา",    sublabel: "เลขนี้ผ่านหลาย signal ทางสถิติ",     border: "border-emerald-500/40", bg: "bg-emerald-500/5",  color: "text-emerald-400" },
+  moderate: { icon: "🟡", label: "สัญญาณปานกลาง",             sublabel: "มีสถิติบ้าง แต่ไม่โดดเด่นมาก",      border: "border-yellow-500/30",  bg: "bg-yellow-500/5",   color: "text-yellow-400"  },
+  weak:     { icon: "🔴", label: "สัญญาณต่ำ",                 sublabel: "สถิติย้อนหลังไม่สนับสนุนเลขนี้",    border: "border-red-500/30",     bg: "bg-red-500/5",      color: "text-red-400"     },
+  never:    { icon: "⚠️", label: "ไม่มีข้อมูลในฐานข้อมูล",   sublabel: "ไม่เคยออกเลยใน 100 งวดที่วิเคราะห์", border: "border-yellow-600/30",  bg: "bg-yellow-500/5",   color: "text-yellow-400"  },
+};
+
+function buildReasons(r: ReturnType<typeof analyzeNumber>, digits: 2 | 3): Array<{ ok: boolean; text: string }> {
+  const reasons: Array<{ ok: boolean; text: string }> = [];
+  if (!r.neverAppeared) {
+    reasons.push({ ok: r.freq >= 3,   text: `ออก ${r.freq} ครั้ง / 100 งวด (อันดับ #${r.rank})` });
+    reasons.push({ ok: r.r12 >= 2,    text: `12 งวดล่าสุด: ออก ${r.r12} ครั้ง` });
+    reasons.push({ ok: r.gap >= 8,    text: `ค้างงวด: ${r.gap >= r.total ? "∞" : r.gap} งวด${r.gap >= 8 ? " (นานมาก)" : ""}` });
+    reasons.push({ ok: r.trend === "up", text: `แนวโน้ม${r.trend === "up" ? "กำลังขึ้น ↑" : r.trend === "down" ? "กำลังลง ↓" : "ทรงตัว →"}` });
+  }
+  if (digits === 2) {
+    reasons.push({ ok: r.tripleCount >= 2, text: `Triple Score: อยู่ใน ${r.tripleCount}/5 method` });
+  }
+  return reasons;
+}
+
+function VerdictCard({ r, digits }: { r: ReturnType<typeof analyzeNumber>; digits: 2 | 3 }) {
+  const key = getVerdictKey(r);
+  const cfg = VERDICT_CONFIG[key];
+  const reasons = buildReasons(r, digits);
+  return (
+    <div className={`border ${cfg.border} ${cfg.bg} rounded-2xl p-4 space-y-3`}>
+      <div className="flex items-center gap-3">
+        <span className="text-2xl leading-none">{cfg.icon}</span>
+        <div>
+          <p className={`text-base font-bold ${cfg.color}`}>{cfg.label}</p>
+          <p className="text-xs text-slate-500">{cfg.sublabel}</p>
+        </div>
+      </div>
+      {reasons.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {reasons.map((reason, i) => (
+            <span key={i} className={`text-[11px] px-2.5 py-1 rounded-lg border font-medium ${
+              reason.ok
+                ? `${cfg.color} border-current/30 bg-current/5`
+                : "text-slate-600 border-[#2A2D3E] bg-[#0F1117]"
+            }`}>
+              {reason.ok ? "✓" : "·"} {reason.text}
+            </span>
+          ))}
+        </div>
+      )}
+      <p className="text-[10px] text-slate-700">
+        ⚠️ Verdict นี้คำนวณจากสถิติย้อนหลัง — ไม่ใช่การทำนายผล
+      </p>
+    </div>
+  );
+}
+
+// ─── Alternatives ─────────────────────────────────────────────────
+function AlternativesCard({
+  current, digits, setInput,
+}: { current: string; digits: 2 | 3; setInput: (v: string) => void }) {
+  // Only meaningful for 2-digit (Triple Score covers 2-digit well)
+  if (digits !== 2) return null;
+
+  const alts = tripleScore.top2
+    .filter(e => e.num !== current && e.score >= 2)
+    .slice(0, 5);
+
+  if (alts.length === 0) return null;
+
+  return (
+    <div className="bg-[#1A1D2E] border border-[#C9A84C]/20 rounded-2xl p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <span className="text-sm">💡</span>
+        <p className="text-sm font-semibold text-slate-300">เลขที่สัญญาณดีกว่า — งวดนี้</p>
+        <span className="text-[10px] text-slate-600 ml-auto">จาก Triple Score</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {alts.map(a => (
+          <button
+            key={a.num}
+            onClick={() => setInput(a.num)}
+            className="flex flex-col items-center bg-[#0F1117] border border-[#C9A84C]/25 hover:border-[#C9A84C]/70 hover:bg-[#C9A84C]/5 rounded-xl px-3 py-2 transition-all">
+            <span className="font-mono font-bold text-lg text-[#C9A84C]">{a.num}</span>
+            <span className="text-[9px] text-[#C9A84C]/60">{a.score}/5 method</span>
+          </button>
+        ))}
+      </div>
+      <p className="text-[10px] text-slate-700">แตะเพื่อเช็คสถิติเลขนั้น</p>
+    </div>
+  );
+}
+
 // ─── Components ───────────────────────────────────────────────────
 
 function ScoreRing({ score }: { score: number }) {
@@ -172,11 +275,11 @@ function LandingContent({ digits }: { digits: 2 | 3 }) {
             <Flame size={14} className="text-red-400" />
             <p className="text-sm font-semibold text-slate-300">🔥 เลขร้อน — ออกบ่อยใน 12 งวดล่าสุด</p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {hot.map(s => (
-              <div key={s.n} className="flex flex-col items-center bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-3 py-2">
-                <span className="font-mono font-bold text-lg text-red-400">{s.n}</span>
-                <span className="text-[10px] text-slate-600">{s.recent} ครั้ง/12งวด</span>
+              <div key={s.n} className="flex flex-col items-center bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-2.5 py-1.5">
+                <span className="font-mono font-bold text-base text-red-400">{s.n}</span>
+                <span className="text-[9px] text-slate-600">{s.recent}x</span>
               </div>
             ))}
           </div>
@@ -188,11 +291,11 @@ function LandingContent({ digits }: { digits: 2 | 3 }) {
             <Snowflake size={14} className="text-blue-400" />
             <p className="text-sm font-semibold text-slate-300">❄️ เลขค้าง — ไม่ออกมานานที่สุด</p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {cold.map(s => (
-              <div key={s.n} className="flex flex-col items-center bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-3 py-2">
-                <span className="font-mono font-bold text-lg text-blue-400">{s.n}</span>
-                <span className="text-[10px] text-slate-600">ค้าง {s.gap} งวด</span>
+              <div key={s.n} className="flex flex-col items-center bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-2.5 py-1.5">
+                <span className="font-mono font-bold text-base text-blue-400">{s.n}</span>
+                <span className="text-[9px] text-slate-600">ค้าง {s.gap}</span>
               </div>
             ))}
           </div>
@@ -279,7 +382,7 @@ export default function CheckerPage() {
             value={input}
             onChange={e => { if (/^\d*$/.test(e.target.value)) setInput(e.target.value); }}
             placeholder={digits === 2 ? "เช่น  8 9" : "เช่น  5 1 2"}
-            className="w-full bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-5 py-4 text-4xl font-mono font-bold text-slate-200 placeholder-slate-800 focus:outline-none focus:border-[#C9A84C]/60 tracking-[0.4em] text-center transition-colors"
+            className="w-full bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-4 py-3 sm:py-4 text-2xl sm:text-4xl font-mono font-bold text-slate-200 placeholder-slate-800 focus:outline-none focus:border-[#C9A84C]/60 tracking-[0.2em] sm:tracking-[0.4em] text-center transition-colors"
             autoFocus
           />
           {input.length > 0 && input.length < digits && (
@@ -349,16 +452,22 @@ export default function CheckerPage() {
             </div>
           </div>
 
-          {/* Never appeared warning */}
+          {/* Verdict card */}
+          <VerdictCard r={r} digits={digits} />
+
+          {/* Alternatives — show when signal is low or never appeared */}
+          {(r.score < 40 || r.neverAppeared) && (
+            <AlternativesCard current={checked} digits={digits} setInput={setInput} />
+          )}
+
+          {/* Never appeared — extra context */}
           {r.neverAppeared && (
-            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 flex gap-3">
-              <AlertTriangle size={16} className="text-yellow-400 shrink-0 mt-0.5" />
-              <div className="text-sm text-yellow-300">
-                <p className="font-semibold">เลขนี้ไม่เคยออกเลยใน 100 งวด</p>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  มุมมองที่ 1: "ถึงเวลาออกแล้ว" · มุมมองที่ 2: "ไม่มีหลักฐานทางสถิติ" — ขึ้นอยู่กับการตีความ
-                </p>
-              </div>
+            <div className="bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-4 py-3 flex gap-3">
+              <AlertTriangle size={14} className="text-yellow-500 shrink-0 mt-0.5" />
+              <p className="text-xs text-slate-500">
+                <span className="text-yellow-400 font-medium">มุมมองที่ 1:</span> "ถึงเวลาออกแล้ว" ·{" "}
+                <span className="text-slate-400 font-medium">มุมมองที่ 2:</span> "ไม่มีหลักฐานทางสถิติ" — ขึ้นอยู่กับการตีความ
+              </p>
             </div>
           )}
 

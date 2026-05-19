@@ -25,12 +25,18 @@ function analyze(digits: 2 | 3) {
     freq: freqAll[n]||0,
     recent: freqRecent[n]||0,
     gap: gapMap[n]??all.length,
-    hot: (freqRecent[n]||0) >= 2 || ((freqRecent[n]||0) >= 1 && (freqAll[n]||0) >= 4),
-    cold: (gapMap[n]??all.length) >= 8,
   }));
 
-  const hot = scored.filter(s => s.hot).sort((a,b) => b.recent - a.recent || b.freq - a.freq).slice(0,8);
-  const cold = scored.filter(s => s.cold).sort((a,b) => b.gap - a.gap).slice(0,8);
+  // Hot = top 8 ที่ออกบ่อยสุดใน 10 งวดล่าสุด (อย่างน้อย 1 ครั้ง)
+  const hot = scored
+    .filter(s => s.recent >= 1)
+    .sort((a,b) => b.recent - a.recent || b.freq - a.freq)
+    .slice(0, 8);
+
+  const cold = scored
+    .filter(s => s.gap >= 8)
+    .sort((a,b) => b.gap - a.gap)
+    .slice(0, 8);
   return { hot, cold };
 }
 

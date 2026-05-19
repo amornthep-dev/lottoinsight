@@ -64,8 +64,9 @@ export default function HistoryPage() {
 
       {/* Table */}
       <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+        <div className="overflow-x-auto">
         {/* Header */}
-        <div className="grid grid-cols-5 gap-2 px-4 py-3 bg-[#0F1117] text-xs text-slate-500 font-semibold border-b border-[#2A2D3E]">
+        <div className="grid grid-cols-5 gap-2 px-4 py-3 bg-[#0F1117] text-xs text-slate-500 font-semibold border-b border-[#2A2D3E] min-w-[380px]">
           <div>งวดที่</div>
           <div className="text-center">รางวัลที่ 1</div>
           <div className="text-center">หน้า 3 ตัว</div>
@@ -83,7 +84,7 @@ export default function HistoryPage() {
             const isLatest = i === 0 && page === 1 && !search;
             return (
               <div key={d.date}
-                className={`grid grid-cols-5 gap-2 px-4 py-4 border-b border-[#2A2D3E]/50 items-center transition-colors hover:bg-[#2A2D3E]/20 ${isLatest ? "bg-[#C9A84C]/5" : ""}`}>
+                className={`grid grid-cols-5 gap-2 px-4 py-4 border-b border-[#2A2D3E]/50 items-center transition-colors hover:bg-[#2A2D3E]/20 min-w-[380px] ${isLatest ? "bg-[#C9A84C]/5" : ""}`}>
                 {/* Date */}
                 <div>
                   <p className="text-xs text-slate-400 leading-tight">{d.dateDisplay}</p>
@@ -96,7 +97,7 @@ export default function HistoryPage() {
 
                 {/* Prize 1 */}
                 <div className="text-center">
-                  <span className="font-mono font-bold text-[#C9A84C] text-lg tracking-widest">{d.prize1}</span>
+                  <span className="font-mono font-bold text-[#C9A84C] text-base tracking-wider">{d.prize1}</span>
                 </div>
 
                 {/* Prize 3 front */}
@@ -125,6 +126,7 @@ export default function HistoryPage() {
             );
           })
         )}
+        </div>{/* end overflow-x-auto */}
       </div>
 
       {/* Pagination */}
