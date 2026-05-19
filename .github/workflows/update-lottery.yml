@@ -1,0 +1,55 @@
+name: 🎱 Auto Update Lottery Data
+
+on:
+  # รันอัตโนมัติทุกวันที่ 1 และ 16 เวลา 15:30 น. ไทย (08:30 UTC)
+  schedule:
+    - cron: "30 8 1,16 * *"
+
+  # รันได้ด้วยตนเองผ่าน GitHub Actions UI
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Fetch & commit lottery result
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # ให้ action commit + push ได้
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch latest lottery result
+        run: node scripts/fetch-lottery.mjs
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/lottery.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No new data — skipping commit"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ New data found — will commit"
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # ดึง dateDisplay จาก JSON บรรทัดแรก
+          DATE=$(node -e "
+            const d = require('./data/lottery.json');
+            process.stdout.write(d[0].dateDisplay);
+          ")
+
+          git add data/lottery.json
+          git commit -m "data: อัปเดตผลหวย ${DATE}"
+          git push
