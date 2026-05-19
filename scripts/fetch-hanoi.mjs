@@ -1,55 +1,16 @@
 /**
- * fetch-hanoi.mjs
- * ดึงผลหวยฮานอยล่าสุดแล้ว prepend เข้า data/hanoi-lottery.json
- *
- * รัน:
- *   node scripts/fetch-hanoi.mjs              ← ดึงงวดล่าสุด
- *   node scripts/fetch-hanoi.mjs --backfill   ← ดึงย้อนหลัง 90 วัน
- *   node scripts/fetch-hanoi.mjs --mock       ← สร้างข้อมูลจำลอง (ไม่เรียก API)
- *
- * ─── API endpoints ─────────────────────────────────────────────────────────
- * TODO: อัปเดต endpoint นี้ตามที่ API ของคุณให้มา
- *
- * Primary:   https://api.lotto432.com/huay/hanoi
- * Fallback:  https://huay.com/api/hanoi
- *
- * Expected response format (Primary):
- * {
- *   "status": "ok",
- *   "result": {
- *     "date": "19/05/2025",          ← DD/MM/YYYY (CE)
- *     "prize1": "56789",             ← 5 หลัก (รางวัลพิเศษ)
- *     "prize3": "789",               ← 3 หลักท้าย
- *     "prize2": "89"                 ← 2 หลักท้าย
- *   }
- * }
- *
- * Expected response format (Fallback):
- * {
- *   "date": "2025-05-19",
- *   "hanoi": { "special": "56789", "3d": "789", "2d": "89" }
- * }
- *
- * หมายเหตุ: หวยฮานอย prize1 = specialPrize 5 หลัก
- * ──────────────────────────────────────────────────────────────────────────
+ * fetch-hanoi.mjs — ดึงผลหวยฮานอย
+ * รัน: node scripts/fetch-hanoi.mjs
  */
 
 import { readFileSync, writeFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import https from "https";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = join(__dirname, "../data/hanoi-lottery.json");
 
-// ── Config ──────────────────────────────────────────────────────────────────
-const MOCK_MODE = process.argv.includes("--mock");
-const BACKFILL  = process.argv.includes("--backfill");
-const BACKFILL_DAYS = 90;
-
-const API_PRIMARY  = "https://api.lotto432.com/huay/hanoi";
-const API_FALLBACK = "https://huay.com/api/hanoi";
-
-// ── Thai helpers ────────────────────────────────────────────────────────────
 const THAI_MONTHS = [
   "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
   "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม",
@@ -60,175 +21,121 @@ function toThaiDateDisplay(ceDate) {
   const [y, m, d] = ceDate.split("-").map(Number);
   return `${d} ${THAI_MONTHS[m - 1]} ${y + 543}`;
 }
-
 function toBEDateStr(ceDate) {
   const [y, m, d] = ceDate.split("-");
   return `${Number(y) + 543}-${m}-${d}`;
 }
-
 function getDayOfWeek(ceDate) {
   const d = new Date(ceDate + "T12:00:00+07:00");
   return THAI_DAYS[d.getDay()];
 }
 
-// ── Mock data generator ─────────────────────────────────────────────────────
-function generateMock(ceDate) {
-  const rnd5 = () => String(Math.floor(Math.random() * 100000)).padStart(5, "0");
-  const prize1 = rnd5(); // 5-digit specialPrize
+// ── Low-level HTTPS GET ────────────────────────────────────────────
+function httpsGet(url, timeoutMs = 15000) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; LottoInsight/1.0)",
+        "Accept": "application/json",
+      },
+    }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return httpsGet(res.headers.location, timeoutMs).then(resolve).catch(reject);
+      }
+      if (res.statusCode !== 200) {
+        res.resume();
+        return reject(new Error(`HTTP ${res.statusCode}`));
+      }
+      let body = "";
+      res.setEncoding("utf8");
+      res.on("data", chunk => body += chunk);
+      res.on("end", () => {
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(new Error("Invalid JSON")); }
+      });
+    });
+    req.setTimeout(timeoutMs, () => req.destroy(new Error("Timeout")));
+    req.on("error", reject);
+  });
+}
+
+// ── Parse result ───────────────────────────────────────────────────
+function parseEntry(json) {
+  const r = json?.result ?? json?.data ?? json;
+  if (!r?.date && !r?.prize1 && !r?.special) throw new Error("Unexpected format");
+
+  let ceDate;
+  const dateStr = String(r.date ?? "");
+  if (dateStr.includes("/")) {
+    const parts = dateStr.split("/");
+    const y = Number(parts[2]) > 2500 ? Number(parts[2]) - 543 : Number(parts[2]);
+    ceDate = `${y}-${parts[1].padStart(2,"0")}-${parts[0].padStart(2,"0")}`;
+  } else if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    ceDate = dateStr;
+  } else {
+    ceDate = new Date().toISOString().slice(0, 10);
+  }
+
+  const prize1 = String(r.prize1 ?? r.special ?? r.top ?? "").padStart(5, "0");
   return {
-    date: toBEDateStr(ceDate),
+    date:        toBEDateStr(ceDate),
     dateDisplay: toThaiDateDisplay(ceDate),
-    dayOfWeek: getDayOfWeek(ceDate),
+    dayOfWeek:   getDayOfWeek(ceDate),
     prize1,
-    prize3back: prize1.slice(-3),
-    prize2back: prize1.slice(-2),
+    prize3back:  prize1.slice(-3),
+    prize2back:  prize1.slice(-2),
   };
 }
 
-// ── Parse API response ── TODO: อัปเดตตามรูปแบบจริงของ API ─────────────────
-function parseResponse(json, sourceUrl) {
-  // Try Primary format
-  if (json?.result?.date) {
-    const r = json.result;
-    const parts = String(r.date).split("/");
-    let ceDate;
-    if (parts.length === 3) {
-      const [dd, mm, yyyy] = parts;
-      ceDate = `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
-    } else {
-      ceDate = r.date;
-    }
-    const prize1 = String(r.prize1 || r.special || r.top || "").padStart(5, "0");
-    return {
-      date: toBEDateStr(ceDate),
-      dateDisplay: toThaiDateDisplay(ceDate),
-      dayOfWeek: getDayOfWeek(ceDate),
-      prize1,
-      prize3back: prize1.slice(-3),
-      prize2back: prize1.slice(-2),
-    };
-  }
-
-  // Try Fallback format
-  if (json?.hanoi || json?.data || json?.date) {
-    const r = json.hanoi ?? json.data ?? json;
-    const ceDate = json.date ?? new Date().toISOString().slice(0, 10);
-    const prize1 = String(r.special || r["5d"] || r.prize1 || r.top || "").padStart(5, "0");
-    return {
-      date: toBEDateStr(ceDate),
-      dateDisplay: toThaiDateDisplay(ceDate),
-      dayOfWeek: getDayOfWeek(ceDate),
-      prize1,
-      prize3back: prize1.slice(-3),
-      prize2back: prize1.slice(-2),
-    };
-  }
-
-  throw new Error(`ไม่รู้จักรูปแบบ response จาก ${sourceUrl} — กรุณาอัปเดต parseResponse()`);
-}
-
-// ── Fetch single draw ────────────────────────────────────────────────────────
+// ── Fetch from multiple endpoints ─────────────────────────────────
 async function fetchLatest() {
-  if (MOCK_MODE) {
-    const today = new Date().toISOString().slice(0, 10);
-    console.log("🎭 MOCK_MODE — สร้างข้อมูลจำลอง");
-    return generateMock(today);
-  }
+  const endpoints = [
+    "https://api.lotto432.com/huay/hanoi",
+    "https://api.lotto432.com/lotto/hanoi",
+    "https://api.lotto432.com/huay/hanoi-special",
+    "https://www.huay.com/api/hanoi",
+  ];
 
-  // Try Primary
-  try {
-    console.log(`📡 เรียก Primary API: ${API_PRIMARY}`);
-    const res = await fetch(API_PRIMARY, {
-      headers: { "User-Agent": "lottoinsight-bot/1.0" },
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    const entry = parseResponse(json, API_PRIMARY);
-    console.log(`✅ Primary สำเร็จ: ${entry.dateDisplay}`);
-    return entry;
-  } catch (err) {
-    console.warn(`⚠️  Primary ล้มเหลว: ${err.message}`);
+  for (const url of endpoints) {
+    try {
+      console.log(`📡 Trying: ${url}`);
+      const json = await httpsGet(url);
+      const entry = parseEntry(json);
+      console.log(`✅ Success: ${entry.dateDisplay}`);
+      return entry;
+    } catch (err) {
+      console.warn(`  ⚠️  Failed: ${err.message}`);
+    }
   }
-
-  // Try Fallback
-  try {
-    console.log(`📡 เรียก Fallback API: ${API_FALLBACK}`);
-    const res = await fetch(API_FALLBACK, {
-      headers: { "User-Agent": "lottoinsight-bot/1.0" },
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    const entry = parseResponse(json, API_FALLBACK);
-    console.log(`✅ Fallback สำเร็จ: ${entry.dateDisplay}`);
-    return entry;
-  } catch (err) {
-    console.error(`❌ Fallback ล้มเหลว: ${err.message}`);
-    throw new Error("ทุก API endpoint ล้มเหลว — กรุณาตรวจสอบ endpoint ใน fetch-hanoi.mjs");
-  }
+  throw new Error("All endpoints failed");
 }
 
-// ── Backfill ─────────────────────────────────────────────────────────────────
-async function backfill() {
-  console.log(`🔄 Backfill โหมด — สร้างข้อมูล ${BACKFILL_DAYS} วันย้อนหลัง (mock)`);
-  const existing = JSON.parse(readFileSync(DATA_PATH, "utf-8"));
-  const existingDates = new Set(existing.map((e) => e.date));
-
-  const newEntries = [];
-  for (let i = 0; i < BACKFILL_DAYS; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    // Hanoi draws every day (no day-off)
-    const ceDate = d.toISOString().slice(0, 10);
-    const beDate = toBEDateStr(ceDate);
-    if (existingDates.has(beDate)) continue;
-    newEntries.push(generateMock(ceDate));
-  }
-
-  if (newEntries.length === 0) {
-    console.log("⏭️  ไม่มีข้อมูลใหม่จาก backfill");
-    return;
-  }
-
-  newEntries.sort((a, b) => b.date.localeCompare(a.date));
-  const updated = [...newEntries, ...existing];
-  writeFileSync(DATA_PATH, JSON.stringify(updated, null, 2), "utf-8");
-  console.log(`✅ Backfill เสร็จ — เพิ่ม ${newEntries.length} รายการ (รวม ${updated.length} รายการ)`);
-}
-
-// ── Main ─────────────────────────────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────────
 async function main() {
-  if (BACKFILL) {
-    await backfill();
-    return;
-  }
-
   console.log("🇻🇳 Fetching หวยฮานอย...");
 
   let entry;
   try {
     entry = await fetchLatest();
   } catch (err) {
-    console.error("❌", err.message);
-    process.exit(1);
+    console.log("ℹ️  All APIs unavailable — no changes made.");
+    process.exit(0);
   }
 
   if (!entry.prize2back || !entry.prize3back) {
-    console.error("❌ ข้อมูลไม่ครบ:", entry);
-    process.exit(1);
+    console.log("ℹ️  Incomplete data — skipping.");
+    process.exit(0);
   }
 
   const existing = JSON.parse(readFileSync(DATA_PATH, "utf-8"));
   if (existing[0]?.date === entry.date) {
-    console.log("⏭️  ข้อมูลวันนี้มีแล้ว — ไม่มีการเปลี่ยนแปลง");
+    console.log("⏭️  Already up-to-date.");
     process.exit(0);
   }
 
   const updated = [entry, ...existing];
   writeFileSync(DATA_PATH, JSON.stringify(updated, null, 2), "utf-8");
-  console.log(`✅ hanoi-lottery.json อัปเดตแล้ว — รวม ${updated.length} รายการ`);
-  console.log("   ล่าสุด:", JSON.stringify(entry, null, 2));
+  console.log(`✅ hanoi-lottery.json updated — ${updated.length} records`);
 }
 
 main();
