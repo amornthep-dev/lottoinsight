@@ -2,11 +2,11 @@ name: 🎱 Auto Update Lottery Data
 
 on:
   # Thai lottery: วันที่ 1 และ 16 เวลา 15:30 น. ไทย (08:30 UTC)
-  # Lao lottery:  จันทร์–เสาร์ เวลา 20:30 น. ไทย (13:30 UTC)
+  # Lao lottery:  จันทร์/พุธ/ศุกร์ เวลา 20:45 น. ไทย (13:45 UTC)
   # Hanoi lottery: ทุกวัน เวลา 18:10 น. ไทย (11:10 UTC)
   schedule:
     - cron: "30 8 1,16 * *"     # Thai
-    - cron: "30 13 * * 1-6"     # Lao (Mon–Sat)
+    - cron: "45 13 * * 1,3,5"   # Lao (Mon/Wed/Fri)
     - cron: "10 11 * * *"       # Hanoi (every day)
 
   # รันได้ด้วยตนเองผ่าน GitHub Actions UI

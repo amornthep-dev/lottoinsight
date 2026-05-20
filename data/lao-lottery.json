@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "date": "2569-05-18",
+    "dateDisplay": "18 พฤษภาคม 2569",
+    "dayOfWeek": "จันทร์",
+    "prize1": "3369",
+    "prize3back": "369",
+    "prize2back": "69"
+  },
+  {
+    "date": "2569-05-15",
+    "dateDisplay": "15 พฤษภาคม 2569",
+    "dayOfWeek": "ศุกร์",
+    "prize1": "0095",
+    "prize3back": "095",
+    "prize2back": "95"
+  },
+  {
+    "date": "2569-05-13",
+    "dateDisplay": "13 พฤษภาคม 2569",
+    "dayOfWeek": "พุธ",
+    "prize1": "0572",
+    "prize3back": "572",
+    "prize2back": "72"
+  },
+  {
+    "date": "2569-05-11",
+    "dateDisplay": "11 พฤษภาคม 2569",
+    "dayOfWeek": "จันทร์",
+    "prize1": "7509",
+    "prize3back": "509",
+    "prize2back": "09"
+  },
+  {
+    "date": "2569-05-08",
+    "dateDisplay": "8 พฤษภาคม 2569",
+    "dayOfWeek": "ศุกร์",
+    "prize1": "7877",
+    "prize3back": "877",
+    "prize2back": "77"
+  },
+  {
+    "date": "2569-05-06",
+    "dateDisplay": "6 พฤษภาคม 2569",
+    "dayOfWeek": "พุธ",
+    "prize1": "4260",
+    "prize3back": "260",
+    "prize2back": "60"
+  }
+]

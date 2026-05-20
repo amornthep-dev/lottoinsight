@@ -24,17 +24,18 @@ function getNextDrawDate(): Date {
   const h = ict.getUTCHours();
   const m = ict.getUTCMinutes();
   const passedToday = h > 20 || (h === 20 && m >= 30);
+  // Draw days: Mon(1), Wed(3), Fri(5)
+  const isDrawDay = day === 1 || day === 3 || day === 5;
 
   let daysAhead = 0;
-  if (day === 0 || (day === 6 && !passedToday)) {
-    // Sunday: skip to Monday
-    // Saturday after draw: skip to Monday
-    if (day === 0) daysAhead = 1;
-    else daysAhead = 2;
-  } else if (passedToday) {
-    // Mon-Fri after draw
-    if (day === 6) daysAhead = 2; // Sat after → Mon
-    else daysAhead = 1;
+  if (isDrawDay && !passedToday) {
+    daysAhead = 0; // draw today, not yet
+  } else {
+    // Find next Mon/Wed/Fri
+    for (let i = 1; i <= 7; i++) {
+      const next = (day + i) % 7;
+      if (next === 1 || next === 3 || next === 5) { daysAhead = i; break; }
+    }
   }
 
   const next = new Date(ict.getTime());
@@ -311,7 +312,7 @@ export default function LaoPage() {
         <div className="flex items-center gap-3 mb-1">
           <Flag size={22} className="text-[#C9A84C]" />
           <h1 className="text-2xl font-bold text-slate-200">หวยลาวพัฒนา</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">ออกทุกวัน จันทร์–เสาร์</span>
+          <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">ออก จันทร์ · พุธ · ศุกร์</span>
         </div>
         <p className="text-slate-500 text-sm">สถิติและวิเคราะห์หวยลาวพัฒนา — ออกผล 20:30 น.</p>
       </section>
