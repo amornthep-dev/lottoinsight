@@ -110,11 +110,19 @@ export function generateAnalysis(results: SheetResult[]): AnalysisResult {
   }
 
   // Method 5: เลขที่ยังไม่เคยออกเลย — ดูจาก pool ทั้งหมด 000-999
+  // Method 5: cold — เลือกจาก cold numbers ที่มี digit sum ใกล้เคียงค่าเฉลี่ยของเลขที่เคยออก
   const allPossible3 = Array.from({ length: 1000 }, (_, i) =>
     i.toString().padStart(3, "0")
   );
   const cold3 = allPossible3.filter((n) => !freq3.has(n));
-  const coldSrc3 = cold3.length > 0 ? cold3 : byGap3.slice(-5);
+  const digitSum = (n: string) => n.split("").reduce((s, d) => s + parseInt(d), 0);
+  const avgSum3 = all3.length > 0
+    ? all3.reduce((s, n) => s + digitSum(n), 0) / all3.length
+    : 13.5;
+  const sortedCold3 = cold3.sort((a, b) =>
+    Math.abs(digitSum(a) - avgSum3) - Math.abs(digitSum(b) - avgSum3)
+  );
+  const coldSrc3 = sortedCold3.length > 0 ? sortedCold3 : byGap3.slice(-5);
   const m5 = pickUnique(coldSrc3, used3, 1);
   m5.forEach((n) =>
     picked3.push({ number: n, method: "ยังไม่เคยออกใน 30 งวด" })
@@ -188,11 +196,18 @@ export function generateAnalysis(results: SheetResult[]): AnalysisResult {
   }
 
   // Method 5: เลขที่ยังไม่เคยออกเลย — ดูจาก pool ทั้งหมด 00-99
+  // Method 5: cold 2 ตัว — เลือกจาก digit sum ใกล้ค่าเฉลี่ย
   const allPossible2 = Array.from({ length: 100 }, (_, i) =>
     i.toString().padStart(2, "0")
   );
   const cold2 = allPossible2.filter((n) => !freq2.has(n));
-  const coldSrc2 = cold2.length > 0 ? cold2 : byGap2.slice(-5);
+  const avgSum2 = all2.length > 0
+    ? all2.reduce((s, n) => s + digitSum(n), 0) / all2.length
+    : 9;
+  const sortedCold2 = cold2.sort((a, b) =>
+    Math.abs(digitSum(a) - avgSum2) - Math.abs(digitSum(b) - avgSum2)
+  );
+  const coldSrc2 = sortedCold2.length > 0 ? sortedCold2 : byGap2.slice(-5);
   const mm5 = pickUnique(coldSrc2, used2, 1);
   mm5.forEach((n) =>
     picked2.push({ number: n, method: "ยังไม่เคยออกใน 30 งวด" })
