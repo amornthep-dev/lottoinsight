@@ -378,7 +378,7 @@ export default async function LotteryPageContent({
       {predRows.length > 0 && (
         <section className="space-y-3">
           <h2 className="text-base font-bold text-slate-200">
-            🎯 ประวัติการทำนาย
+            🎯 ประวัติการวิเคราะห์จากสถิติ
           </h2>
           <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
@@ -390,11 +390,11 @@ export default async function LotteryPageContent({
                     </th>
                     {config.show3Digit && (
                       <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
-                        ทำนาย 3 ตัว
+                        วิเคราะห์ 3 ตัว
                       </th>
                     )}
                     <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
-                      ทำนาย 2 ตัว
+                      วิเคราะห์ 2 ตัว
                     </th>
                     {config.show3Digit && (
                       <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
@@ -521,7 +521,7 @@ export default async function LotteryPageContent({
               return (
                 <div className="border-t border-[#2A2D3E] px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
                   <p className="text-[11px] text-slate-500">
-                    ทำนายถูก{" "}
+                    วิเคราะห์ถูก{" "}
                     <span className="text-slate-300 font-bold">
                       {hits}/{done.length}
                     </span>{" "}

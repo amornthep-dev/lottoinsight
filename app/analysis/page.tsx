@@ -342,7 +342,7 @@ function TransitionDisplay() {
 
       {/* Current draw → predicted */}
       <div className="bg-[#0F1117] rounded-xl p-3">
-        <p className="text-[10px] text-slate-500 mb-2">งวดล่าสุด: <span className="font-mono font-bold text-teal-400">{curNum}</span> (d1={curD1}, d2={curD2}) → ทำนาย top digit:</p>
+        <p className="text-[10px] text-slate-500 mb-2">งวดล่าสุด: <span className="font-mono font-bold text-teal-400">{curNum}</span> (d1={curD1}, d2={curD2}) → วิเคราะห์ top digit:</p>
         <div className="flex gap-2 flex-wrap">
           {nextDigits.map((d, i) => (
             <div key={d} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border
@@ -592,9 +592,12 @@ export default function AnalysisPage() {
 
       {/* Header */}
       <section>
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-3 mb-1 flex-wrap">
           <span className="text-2xl">🔱</span>
           <h1 className="text-2xl font-bold text-slate-200">Triple Score V2 Analysis</h1>
+          <span className="inline-flex items-center gap-1.5 bg-[#1A1D2E] border border-[#C9A84C]/40 text-[#C9A84C] text-xs font-bold px-3 py-1 rounded-full">
+            🇹🇭 หวยไทย · เลข 2 ตัว
+          </span>
         </div>
         <p className="text-slate-500 text-sm">
           วิเคราะห์ 5 มิติพร้อมกัน — เลขที่ผ่านทุก method คือเลขที่โดดเด่นเชิงสถิติที่สุด

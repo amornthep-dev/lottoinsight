@@ -1,16 +1,23 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --background: #0F1117;
-  --foreground: #E2E8F0;
-  --gold: #C9A84C;
-  --gold-light: #F0D080;
-  --dark-card: #1A1D2E;
-  --dark-border: #2A2D3E;
+  --background: #0D1526;
+  --foreground: #E8EEFF;
+  --gold: #F0B429;
+  --gold-light: #FFD166;
+  --dark-card: #162033;
+  --dark-border: #253554;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Sarabun', 'Noto Sans Thai', Arial, sans-serif;
+}
+
+/* ตัวเลขทุกที่ใช้ JetBrains Mono — แยก 0 กับ 8 ชัดเจน */
+.font-mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-feature-settings: "zero" 1;
 }
