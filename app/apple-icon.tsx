@@ -8,7 +8,7 @@ export default function AppleIcon() {
     (
       <div
         style={{
-          background: "#0F1117",
+          background: "#120820",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -24,7 +24,7 @@ export default function AppleIcon() {
         {/* "LI" text */}
         <div style={{
           fontSize: 26, fontWeight: 900,
-          color: "#C9A84C", fontFamily: "sans-serif",
+          color: "#A855F7", fontFamily: "sans-serif",
           letterSpacing: "0.05em", display: "flex",
         }}>
           LottoInsight

@@ -68,26 +68,26 @@ export default function LeaderboardTeaser() {
   const hitCount = TEASER.filter(d => d.hit2 || d.hit3).length;
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Clapperboard size={16} className="text-[#C9A84C]" />
+          <Clapperboard size={16} className="text-[#A855F7]" />
           <div>
             <h2 className="text-base font-semibold text-slate-300">Backtest ย้อนหลัง</h2>
             <p className="text-xs text-slate-600">Phase vs ผลจริง — 3 งวดล่าสุด</p>
           </div>
         </div>
         <Link href="/leaderboard"
-          className="flex items-center gap-1 text-xs text-slate-500 hover:text-[#C9A84C] transition-colors">
+          className="flex items-center gap-1 text-xs text-slate-500 hover:text-[#A855F7] transition-colors">
           ดูทั้งหมด <ChevronRight size={12} />
         </Link>
       </div>
 
       {/* Phase 4 hit summary */}
-      <div className="bg-[#0F1117] rounded-xl px-4 py-3 flex items-center justify-between">
+      <div className="bg-[#120820] rounded-xl px-4 py-3 flex items-center justify-between">
         <div>
           <p className="text-xs text-slate-500">Phase 4 ถูก (3 งวดล่าสุด)</p>
-          <p className="text-2xl font-bold text-[#C9A84C] mt-0.5">{hitCount}<span className="text-sm text-slate-500">/{TEASER.length} งวด</span></p>
+          <p className="text-2xl font-bold text-[#A855F7] mt-0.5">{hitCount}<span className="text-sm text-slate-500">/{TEASER.length} งวด</span></p>
         </div>
         <span className="text-3xl">{hitCount >= 2 ? "🎯" : hitCount === 1 ? "✅" : "📊"}</span>
       </div>
@@ -95,11 +95,11 @@ export default function LeaderboardTeaser() {
       {/* 3 recent draws */}
       <div className="space-y-2">
         {TEASER.map((d, i) => (
-          <div key={i} className={`rounded-xl px-3 py-2.5 border ${(d.hit2 || d.hit3) ? "border-[#C9A84C]/30 bg-[#C9A84C]/5" : "border-[#2A2D3E] bg-[#0F1117]/50"}`}>
+          <div key={i} className={`rounded-xl px-3 py-2.5 border ${(d.hit2 || d.hit3) ? "border-[#A855F7]/30 bg-[#A855F7]/5" : "border-[#3D2060] bg-[#120820]/50"}`}>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-xs text-slate-500">{d.date}</span>
               {(d.hit2 || d.hit3) && (
-                <span className="text-[10px] text-[#C9A84C] font-bold flex items-center gap-0.5">
+                <span className="text-[10px] text-[#A855F7] font-bold flex items-center gap-0.5">
                   <CheckCircle size={9} /> Phase 4 ถูก
                 </span>
               )}
@@ -108,7 +108,7 @@ export default function LeaderboardTeaser() {
               <div className="flex items-center gap-1">
                 <span className="text-[10px] text-slate-600">P4 คาด:</span>
                 {d.p4_2.map(n => (
-                  <span key={n} className={`font-mono text-xs font-bold px-1.5 py-0.5 rounded border ${n === d.actual2 ? "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10" : "border-[#2A2D3E] text-slate-600"}`}>{n}</span>
+                  <span key={n} className={`font-mono text-xs font-bold px-1.5 py-0.5 rounded border ${n === d.actual2 ? "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10" : "border-[#3D2060] text-slate-600"}`}>{n}</span>
                 ))}
               </div>
               <div className="flex items-center gap-1">
@@ -121,7 +121,7 @@ export default function LeaderboardTeaser() {
       </div>
 
       <Link href="/leaderboard"
-        className="block w-full text-center bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-bold py-2 rounded-xl hover:bg-[#C9A84C]/20 transition-colors">
+        className="block w-full text-center bg-[#A855F7]/10 border border-[#A855F7]/30 text-[#A855F7] text-xs font-bold py-2 rounded-xl hover:bg-[#A855F7]/20 transition-colors">
         ดู Backtest เต็ม 10 งวด →
       </Link>
     </section>

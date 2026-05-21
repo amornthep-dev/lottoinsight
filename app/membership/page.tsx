@@ -41,7 +41,7 @@ function ComingSoonModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#1A1D2E] border border-[#C9A84C]/40 rounded-2xl p-6 max-w-sm w-full space-y-4 relative">
+      <div className="bg-[#1E1040] border border-[#A855F7]/40 rounded-2xl p-6 max-w-sm w-full space-y-4 relative">
         <button onClick={onClose}
           className="absolute top-4 right-4 text-slate-600 hover:text-slate-400 transition-colors">
           <X size={18} />
@@ -54,10 +54,10 @@ function ComingSoonModal({ onClose }: { onClose: () => void }) {
             </div>
             <p className="font-bold text-slate-200">บันทึกแล้ว!</p>
             <p className="text-sm text-slate-400">
-              เราจะแจ้งเตือนที่ <span className="text-[#C9A84C]">{email}</span> เมื่อระบบสมาชิกพร้อมใช้งาน
+              เราจะแจ้งเตือนที่ <span className="text-[#A855F7]">{email}</span> เมื่อระบบสมาชิกพร้อมใช้งาน
             </p>
             <button onClick={onClose}
-              className="w-full bg-[#C9A84C] text-[#0F1117] font-bold py-2.5 rounded-xl hover:bg-[#F0D080] transition-colors text-sm">
+              className="w-full bg-[#A855F7] text-[#120820] font-bold py-2.5 rounded-xl hover:bg-[#C084FC] transition-colors text-sm">
               ปิด
             </button>
           </div>
@@ -76,10 +76,10 @@ function ComingSoonModal({ onClose }: { onClose: () => void }) {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full bg-[#0F1117] border border-[#2A2D3E] focus:border-[#C9A84C]/60 rounded-xl px-4 py-3 text-slate-200 text-sm placeholder-slate-700 outline-none transition-colors"
+                className="w-full bg-[#120820] border border-[#3D2060] focus:border-[#A855F7]/60 rounded-xl px-4 py-3 text-slate-200 text-sm placeholder-slate-700 outline-none transition-colors"
               />
               <button type="submit"
-                className="w-full bg-[#C9A84C] text-[#0F1117] font-bold py-3 rounded-xl hover:bg-[#F0D080] transition-colors flex items-center justify-center gap-2">
+                className="w-full bg-[#A855F7] text-[#120820] font-bold py-3 rounded-xl hover:bg-[#C084FC] transition-colors flex items-center justify-center gap-2">
                 <Bell size={15} /> แจ้งเตือนฉัน
               </button>
             </form>
@@ -104,12 +104,12 @@ export default function MembershipPage() {
 
       {/* Hero */}
       <section className="text-center py-6">
-        <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-full px-4 py-1.5 mb-4">
-          <Star size={14} className="text-[#C9A84C]" />
-          <span className="text-sm text-[#C9A84C] font-semibold">LottoInsight Premium — เร็วๆ นี้</span>
+        <div className="inline-flex items-center gap-2 bg-[#A855F7]/10 border border-[#A855F7]/30 rounded-full px-4 py-1.5 mb-4">
+          <Star size={14} className="text-[#A855F7]" />
+          <span className="text-sm text-[#A855F7] font-semibold">LottoInsight Premium — เร็วๆ นี้</span>
         </div>
         <h1 className="text-3xl font-bold text-slate-200 mb-3">
-          ข้อมูลสถิติชั้นสูง <span className="text-[#C9A84C]">Phase 4</span>
+          ข้อมูลสถิติชั้นสูง <span className="text-[#A855F7]">Phase 4</span>
         </h1>
         <p className="text-slate-400 text-lg max-w-xl mx-auto">
           2 กลุ่มเลขที่มีสถิติสูงกว่าค่าเฉลี่ย คัดกรองจากทุกเกณฑ์ — ข้อมูลเชิงสถิติ ไม่ใช่การทำนาย
@@ -118,25 +118,25 @@ export default function MembershipPage() {
 
       {/* Pricing Card */}
       <div className="max-w-sm mx-auto">
-        <div className="bg-[#1A1D2E] border border-[#C9A84C]/50 rounded-2xl overflow-hidden relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent pointer-events-none" />
+        <div className="bg-[#1E1040] border border-[#A855F7]/50 rounded-2xl overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#A855F7]/5 to-transparent pointer-events-none" />
 
           {/* Coming Soon Banner */}
-          <div className="bg-[#C9A84C]/15 border-b border-[#C9A84C]/30 px-4 py-2 text-center">
-            <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-wider">🚀 เปิดให้สมัครเร็วๆ นี้</span>
+          <div className="bg-[#A855F7]/15 border-b border-[#A855F7]/30 px-4 py-2 text-center">
+            <span className="text-xs font-bold text-[#A855F7] uppercase tracking-wider">🚀 เปิดให้สมัครเร็วๆ นี้</span>
           </div>
 
           <div className="p-8 text-center">
             <p className="text-slate-400 text-sm mb-2">สมาชิกรายเดือน</p>
             <div className="flex items-end justify-center gap-1 mb-1">
-              <span className="text-5xl font-bold text-[#C9A84C]">49</span>
+              <span className="text-5xl font-bold text-[#A855F7]">49</span>
               <span className="text-slate-400 mb-2">บาท</span>
             </div>
             <p className="text-slate-600 text-sm mb-8">ต่อเดือน · ยกเลิกได้ตลอดเวลา</p>
 
             <button
               onClick={() => setShowModal(true)}
-              className="w-full bg-[#C9A84C] text-[#0F1117] font-bold py-3.5 rounded-xl hover:bg-[#F0D080] transition-all text-lg">
+              className="w-full bg-[#A855F7] text-[#120820] font-bold py-3.5 rounded-xl hover:bg-[#C084FC] transition-all text-lg">
               แจ้งเตือนเมื่อเปิดสมัคร 🔔
             </button>
             <p className="text-xs text-slate-600 mt-3">💳 รองรับ PromptPay · บัตรเครดิต · Omise</p>
@@ -147,7 +147,7 @@ export default function MembershipPage() {
       {/* Comparison Table */}
       <section className="grid md:grid-cols-2 gap-6">
         {/* Free */}
-        <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-6">
+        <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-5">
             <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
               <Zap size={15} className="text-slate-400" />
@@ -168,16 +168,16 @@ export default function MembershipPage() {
         </div>
 
         {/* Premium */}
-        <div className="bg-[#C9A84C]/5 border border-[#C9A84C]/40 rounded-2xl p-6 relative">
-          <div className="absolute top-4 right-4 bg-[#C9A84C] text-[#0F1117] text-xs font-bold px-2.5 py-1 rounded-full">
+        <div className="bg-[#A855F7]/5 border border-[#A855F7]/40 rounded-2xl p-6 relative">
+          <div className="absolute top-4 right-4 bg-[#A855F7] text-[#120820] text-xs font-bold px-2.5 py-1 rounded-full">
             เร็วๆ นี้
           </div>
           <div className="flex items-center gap-2 mb-5">
-            <div className="w-8 h-8 rounded-full bg-[#C9A84C]/20 flex items-center justify-center">
-              <Star size={15} className="text-[#C9A84C]" />
+            <div className="w-8 h-8 rounded-full bg-[#A855F7]/20 flex items-center justify-center">
+              <Star size={15} className="text-[#A855F7]" />
             </div>
             <div>
-              <p className="font-bold text-[#C9A84C]">Premium</p>
+              <p className="font-bold text-[#A855F7]">Premium</p>
               <p className="text-xs text-slate-500">49 บาท / เดือน</p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function MembershipPage() {
           <ul className="space-y-3">
             {BENEFITS_MEMBER.map(b => (
               <li key={b} className="flex items-start gap-2 text-sm text-slate-300">
-                <CheckCircle size={14} className="text-[#C9A84C] shrink-0 mt-0.5" />
+                <CheckCircle size={14} className="text-[#A855F7] shrink-0 mt-0.5" />
                 {b}
               </li>
             ))}
@@ -194,11 +194,11 @@ export default function MembershipPage() {
       </section>
 
       {/* Phase 4 Preview (Blurred) */}
-      <section className="bg-[#1A1D2E] border border-[#C9A84C]/30 rounded-2xl overflow-hidden">
-        <div className="p-5 border-b border-[#C9A84C]/20">
+      <section className="bg-[#1E1040] border border-[#A855F7]/30 rounded-2xl overflow-hidden">
+        <div className="p-5 border-b border-[#A855F7]/20">
           <div className="flex items-center gap-2">
-            <Lock size={15} className="text-[#C9A84C]" />
-            <span className="text-sm font-bold text-[#C9A84C]">Phase 4 — ตัวอย่าง</span>
+            <Lock size={15} className="text-[#A855F7]" />
+            <span className="text-sm font-bold text-[#A855F7]">Phase 4 — ตัวอย่าง</span>
             <span className="text-xs text-slate-600">(สมาชิกเท่านั้น)</span>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default function MembershipPage() {
                 <p className="text-xs text-slate-500 mb-2">เลขท้าย 3 ตัว (2 ชุด)</p>
                 <div className="flex gap-3">
                   {["512", "347"].map(n => (
-                    <span key={n} className="font-mono font-bold text-2xl px-4 py-2 bg-[#0F1117] border border-[#C9A84C]/30 rounded-xl text-[#C9A84C]">{n}</span>
+                    <span key={n} className="font-mono font-bold text-2xl px-4 py-2 bg-[#120820] border border-[#A855F7]/30 rounded-xl text-[#A855F7]">{n}</span>
                   ))}
                 </div>
               </div>
@@ -217,19 +217,19 @@ export default function MembershipPage() {
                 <p className="text-xs text-slate-500 mb-2">เลขท้าย 2 ตัว (2 ชุด)</p>
                 <div className="flex gap-3">
                   {["89", "12"].map(n => (
-                    <span key={n} className="font-mono font-bold text-2xl px-4 py-2 bg-[#0F1117] border border-[#C9A84C]/30 rounded-xl text-[#C9A84C]">{n}</span>
+                    <span key={n} className="font-mono font-bold text-2xl px-4 py-2 bg-[#120820] border border-[#A855F7]/30 rounded-xl text-[#A855F7]">{n}</span>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-          <div className="absolute inset-0 flex items-center justify-center bg-[#0F1117]/60 backdrop-blur-[2px]">
+          <div className="absolute inset-0 flex items-center justify-center bg-[#120820]/60 backdrop-blur-[2px]">
             <div className="text-center">
-              <Lock size={28} className="text-[#C9A84C] mx-auto mb-2" />
-              <p className="text-sm font-bold text-[#C9A84C]">เปิดให้สมัครเร็วๆ นี้</p>
+              <Lock size={28} className="text-[#A855F7] mx-auto mb-2" />
+              <p className="text-sm font-bold text-[#A855F7]">เปิดให้สมัครเร็วๆ นี้</p>
               <button
                 onClick={() => setShowModal(true)}
-                className="mt-3 inline-block bg-[#C9A84C] text-[#0F1117] px-5 py-2 rounded-full text-sm font-bold hover:bg-[#F0D080] transition-colors cursor-pointer">
+                className="mt-3 inline-block bg-[#A855F7] text-[#120820] px-5 py-2 rounded-full text-sm font-bold hover:bg-[#C084FC] transition-colors cursor-pointer">
                 แจ้งเตือนฉัน 🔔
               </button>
             </div>
@@ -259,7 +259,7 @@ export default function MembershipPage() {
               a: "ไม่มี การลงทุนในสลากกินแบ่งมีความเสี่ยงสูง เว็บนี้ให้ข้อมูลสถิติเพื่อการศึกษาเท่านั้น",
             },
           ].map(({ q, a }) => (
-            <div key={q} className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl p-4">
+            <div key={q} className="bg-[#1E1040] border border-[#3D2060] rounded-xl p-4">
               <p className="text-sm font-semibold text-slate-300 mb-1">{q}</p>
               <p className="text-sm text-slate-500">{a}</p>
             </div>

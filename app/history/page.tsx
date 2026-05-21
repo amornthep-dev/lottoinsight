@@ -45,7 +45,7 @@ export default function HistoryPage() {
           placeholder="ค้นหา เช่น 89, 512, พฤษภาคม..."
           value={search}
           onChange={e => handleSearch(e.target.value)}
-          className="w-full bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl pl-9 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-[#C9A84C]/50 transition-colors"
+          className="w-full bg-[#1E1040] border border-[#3D2060] rounded-xl pl-9 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-[#A855F7]/50 transition-colors"
         />
         {search && (
           <button onClick={() => handleSearch("")}
@@ -58,15 +58,15 @@ export default function HistoryPage() {
       {/* Results count */}
       {search && (
         <p className="text-sm text-slate-500">
-          พบ <span className="text-[#C9A84C] font-semibold">{filtered.length}</span> งวดที่ตรงกับ "{search}"
+          พบ <span className="text-[#A855F7] font-semibold">{filtered.length}</span> งวดที่ตรงกับ "{search}"
         </p>
       )}
 
       {/* Table */}
-      <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
         {/* Header */}
-        <div className="grid grid-cols-5 gap-2 px-4 py-3 bg-[#0F1117] text-xs text-slate-500 font-semibold border-b border-[#2A2D3E] min-w-[380px]">
+        <div className="grid grid-cols-5 gap-2 px-4 py-3 bg-[#120820] text-xs text-slate-500 font-semibold border-b border-[#3D2060] min-w-[380px]">
           <div>งวดที่</div>
           <div className="text-center">รางวัลที่ 1</div>
           <div className="text-center">หน้า 3 ตัว</div>
@@ -84,12 +84,12 @@ export default function HistoryPage() {
             const isLatest = i === 0 && page === 1 && !search;
             return (
               <div key={d.date}
-                className={`grid grid-cols-5 gap-2 px-4 py-4 border-b border-[#2A2D3E]/50 items-center transition-colors hover:bg-[#2A2D3E]/20 min-w-[380px] ${isLatest ? "bg-[#C9A84C]/5" : ""}`}>
+                className={`grid grid-cols-5 gap-2 px-4 py-4 border-b border-[#3D2060]/50 items-center transition-colors hover:bg-[#3D2060]/20 min-w-[380px] ${isLatest ? "bg-[#A855F7]/5" : ""}`}>
                 {/* Date */}
                 <div>
                   <p className="text-xs text-slate-400 leading-tight">{d.dateDisplay}</p>
                   {isLatest && (
-                    <span className="text-[9px] bg-[#C9A84C] text-[#0F1117] px-1.5 py-0.5 rounded-full font-bold mt-0.5 inline-block">
+                    <span className="text-[9px] bg-[#A855F7] text-[#120820] px-1.5 py-0.5 rounded-full font-bold mt-0.5 inline-block">
                       ล่าสุด
                     </span>
                   )}
@@ -97,7 +97,7 @@ export default function HistoryPage() {
 
                 {/* Prize 1 */}
                 <div className="text-center">
-                  <span className="font-mono font-bold text-[#C9A84C] text-base tracking-wider">{d.prize1}</span>
+                  <span className="font-mono font-bold text-[#A855F7] text-base tracking-wider">{d.prize1}</span>
                 </div>
 
                 {/* Prize 3 front */}
@@ -135,7 +135,7 @@ export default function HistoryPage() {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-2 rounded-xl bg-[#1A1D2E] border border-[#2A2D3E] text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+            className="p-2 rounded-xl bg-[#1E1040] border border-[#3D2060] text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
             <ChevronLeft size={16} />
           </button>
 
@@ -146,8 +146,8 @@ export default function HistoryPage() {
                 onClick={() => setPage(p)}
                 className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
                   p === page
-                    ? "bg-[#C9A84C] text-[#0F1117]"
-                    : "bg-[#1A1D2E] border border-[#2A2D3E] text-slate-400 hover:text-slate-200"
+                    ? "bg-[#A855F7] text-[#120820]"
+                    : "bg-[#1E1040] border border-[#3D2060] text-slate-400 hover:text-slate-200"
                 }`}>
                 {p}
               </button>
@@ -157,7 +157,7 @@ export default function HistoryPage() {
           <button
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="p-2 rounded-xl bg-[#1A1D2E] border border-[#2A2D3E] text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+            className="p-2 rounded-xl bg-[#1E1040] border border-[#3D2060] text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
             <ChevronRight size={16} />
           </button>
         </div>

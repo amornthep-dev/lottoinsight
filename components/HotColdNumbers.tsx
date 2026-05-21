@@ -45,7 +45,7 @@ export default function HotColdNumbers() {
   const { hot, cold } = analyze(tab);
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-base font-semibold text-slate-300">🔥 เลขร้อน / ❄️ เลขเย็น</h2>
@@ -55,7 +55,7 @@ export default function HotColdNumbers() {
           {([2,3] as const).map(d => (
             <button key={d} onClick={() => setTab(d)}
               className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                tab === d ? "bg-[#C9A84C] text-[#0F1117]" : "bg-[#0F1117] text-slate-400 border border-[#2A2D3E]"
+                tab === d ? "bg-[#A855F7] text-[#120820]" : "bg-[#120820] text-slate-400 border border-[#3D2060]"
               }`}>
               ท้าย {d} ตัว
             </button>

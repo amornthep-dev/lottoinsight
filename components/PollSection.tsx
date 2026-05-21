@@ -45,7 +45,7 @@ export default function PollSection() {
   const maxVote = Math.max(...Object.values(votes), 1);
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-6 space-y-5">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-6 space-y-5">
       {/* Header */}
       <div className="flex items-start justify-between flex-wrap gap-3">
         <div>
@@ -63,7 +63,7 @@ export default function PollSection() {
         {[{ id: "2", label: "ท้าย 2 ตัว" }, { id: "3", label: "ท้าย 3 ตัว" }].map(t => (
           <button key={t.id} onClick={() => setTab(t.id as "2" | "3")}
             className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-              tab === t.id ? "bg-[#C9A84C] text-[#0F1117]" : "bg-[#0F1117] text-slate-400 border border-[#2A2D3E]"
+              tab === t.id ? "bg-[#A855F7] text-[#120820]" : "bg-[#120820] text-slate-400 border border-[#3D2060]"
             }`}>
             {t.label}
           </button>
@@ -87,22 +87,22 @@ export default function PollSection() {
                   disabled={!!voted}
                   className={`font-mono font-bold text-lg w-16 py-1.5 rounded-xl border transition-all shrink-0 ${
                     isVoted
-                      ? "bg-[#C9A84C] text-[#0F1117] border-[#C9A84C]"
+                      ? "bg-[#A855F7] text-[#120820] border-[#A855F7]"
                       : voted
-                      ? "bg-[#0F1117] text-slate-600 border-[#2A2D3E] cursor-default"
-                      : "bg-[#0F1117] text-slate-300 border-[#2A2D3E] hover:border-[#C9A84C]/50 hover:text-[#C9A84C] cursor-pointer"
+                      ? "bg-[#120820] text-slate-600 border-[#3D2060] cursor-default"
+                      : "bg-[#120820] text-slate-300 border-[#3D2060] hover:border-[#A855F7]/50 hover:text-[#A855F7] cursor-pointer"
                   }`}>
                   {num}
                 </button>
 
                 {/* Bar */}
                 <div className="flex-1 relative">
-                  <div className="h-6 bg-[#0F1117] rounded-full overflow-hidden">
+                  <div className="h-6 bg-[#120820] rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500"
                       style={{
                         width: voted ? `${pct}%` : "0%",
-                        backgroundColor: isVoted ? "#C9A84C" : isLeader && voted ? "#C9A84C44" : "#2A2D3E",
+                        backgroundColor: isVoted ? "#A855F7" : isLeader && voted ? "#A855F744" : "#3D2060",
                       }}
                     />
                   </div>
@@ -130,8 +130,8 @@ export default function PollSection() {
       )}
 
       {voted && (
-        <div className="bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-xl p-3 text-center">
-          <p className="text-sm text-[#C9A84C] font-semibold">✅ โหวตแล้ว! ขอให้ถูกนะ 🍀</p>
+        <div className="bg-[#A855F7]/10 border border-[#A855F7]/30 rounded-xl p-3 text-center">
+          <p className="text-sm text-[#A855F7] font-semibold">✅ โหวตแล้ว! ขอให้ถูกนะ 🍀</p>
           <p className="text-xs text-slate-500 mt-0.5">ผลจะรู้ {latest.dateDisplay.split(" ").slice(-2).join(" ")}</p>
         </div>
       )}

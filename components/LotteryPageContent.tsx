@@ -17,10 +17,10 @@ function NumberCard({
   digits: 2 | 3;
 }) {
   return (
-    <div className="bg-[#0F1117] border border-[#2A2D3E] hover:border-[#C9A84C]/40 rounded-xl py-3 px-1 text-center transition-colors">
+    <div className="bg-[#120820] border border-[#3D2060] hover:border-[#A855F7]/40 rounded-xl py-3 px-1 text-center transition-colors">
       <p className="text-[10px] text-slate-700 mb-1">#{rank}</p>
       <p
-        className={`font-bold text-[#C9A84C] font-mono tracking-widest leading-none ${
+        className={`font-bold text-[#A855F7] font-mono tracking-widest leading-none ${
           digits === 3 ? "text-2xl" : "text-3xl"
         }`}
       >
@@ -173,7 +173,7 @@ export default async function LotteryPageContent({
 
       {/* ── No data state ───────────────────────────────── */}
       {noData && (
-        <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-8 text-center">
+        <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-8 text-center">
           <p className="text-slate-500 text-sm">ยังไม่มีข้อมูล</p>
           <p className="text-slate-600 text-xs mt-1">
             กรุณาเพิ่มข้อมูลใน Google Sheets
@@ -190,8 +190,8 @@ export default async function LotteryPageContent({
 
           {/* 3-digit — แสดงเฉพาะหวยที่มีรางวัล 3 ตัว */}
           {config.show3Digit && (
-            <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-[#2A2D3E]">
+            <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-[#3D2060]">
                 <h3 className="font-semibold text-slate-200">เลข 3 ตัว</h3>
                 <p className="text-xs text-slate-500 mt-0.5">
                   {analysis.threeDigit.length} ชุดที่น่าสนใจจากสถิติ
@@ -211,8 +211,8 @@ export default async function LotteryPageContent({
           )}
 
           {/* 2-digit */}
-          <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
-            <div className="px-4 py-3 border-b border-[#2A2D3E]">
+          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-[#3D2060]">
               <h3 className="font-semibold text-slate-200">เลข 2 ตัว</h3>
               <p className="text-xs text-slate-500 mt-0.5">
                 {analysis.twoDigit.length} ชุดที่น่าสนใจจากสถิติ
@@ -231,14 +231,14 @@ export default async function LotteryPageContent({
           </div>
 
           {/* Methodology accordion */}
-          <details className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl overflow-hidden group">
+          <details className="bg-[#1E1040] border border-[#3D2060] rounded-xl overflow-hidden group">
             <summary className="px-4 py-3 cursor-pointer flex items-center justify-between text-sm text-slate-400 hover:text-slate-200 transition-colors select-none [list-style:none] [&::-webkit-details-marker]:hidden">
               <span>🔍 ดูวิธีคำนวณ</span>
               <span className="text-slate-600 group-open:rotate-180 transition-transform duration-200 inline-block">
                 ▼
               </span>
             </summary>
-            <div className="px-4 pb-4 pt-3 border-t border-[#2A2D3E] space-y-2">
+            <div className="px-4 pb-4 pt-3 border-t border-[#3D2060] space-y-2">
               <p className="text-[11px] text-slate-600 mb-3">
                 แต่ละชุดถูกคัดเลือกด้วยวิธีต่างกัน:
               </p>
@@ -252,10 +252,10 @@ export default async function LotteryPageContent({
                   key={`${item.label}-${item.number}-${i}`}
                   className="flex items-center gap-3 text-xs"
                 >
-                  <span className="font-mono font-bold text-[#C9A84C] min-w-[2.5rem]">
+                  <span className="font-mono font-bold text-[#A855F7] min-w-[2.5rem]">
                     {item.number}
                   </span>
-                  <span className="text-slate-600 bg-[#0F1117] px-1.5 py-0.5 rounded text-[10px]">
+                  <span className="text-slate-600 bg-[#120820] px-1.5 py-0.5 rounded text-[10px]">
                     {item.label}
                   </span>
                   <span className="text-slate-500">{item.method}</span>
@@ -272,9 +272,9 @@ export default async function LotteryPageContent({
           <h2 className="text-base font-bold text-slate-200">
             🔄 งวดที่แล้ว — เทียบผล
           </h2>
-          <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
             {/* header row */}
-            <div className="px-4 py-2.5 border-b border-[#2A2D3E] flex items-center justify-between gap-2 flex-wrap">
+            <div className="px-4 py-2.5 border-b border-[#3D2060] flex items-center justify-between gap-2 flex-wrap">
               <p className="text-sm text-slate-300">
                 ผลจริงงวด{" "}
                 <span className="font-mono text-slate-200">
@@ -312,7 +312,7 @@ export default async function LotteryPageContent({
                         className={`font-mono font-bold text-sm px-2 py-1 rounded-lg ${
                           n === actual3
                             ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                            : "bg-[#0F1117] text-slate-400"
+                            : "bg-[#120820] text-slate-400"
                         }`}
                       >
                         {n}
@@ -322,7 +322,7 @@ export default async function LotteryPageContent({
                   <p className="text-[11px] text-slate-500 mt-3 mb-1">
                     ผลจริง
                   </p>
-                  <span className="font-mono font-bold text-2xl text-[#C9A84C]">
+                  <span className="font-mono font-bold text-2xl text-[#A855F7]">
                     {actual3 || "—"}
                   </span>
                 </div>
@@ -340,7 +340,7 @@ export default async function LotteryPageContent({
                       className={`font-mono font-bold text-sm px-2 py-1 rounded-lg ${
                         n === actual2a || n === actual2b
                           ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : "bg-[#0F1117] text-slate-400"
+                          : "bg-[#120820] text-slate-400"
                       }`}
                     >
                       {n}
@@ -352,7 +352,7 @@ export default async function LotteryPageContent({
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
                   {actual2a && (
-                    <span className="font-mono font-bold text-2xl text-[#C9A84C]">
+                    <span className="font-mono font-bold text-2xl text-[#A855F7]">
                       {actual2a}
                     </span>
                   )}
@@ -380,11 +380,11 @@ export default async function LotteryPageContent({
           <h2 className="text-base font-bold text-slate-200">
             🎯 ประวัติการวิเคราะห์จากสถิติ
           </h2>
-          <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-[#2A2D3E]">
+                  <tr className="border-b border-[#3D2060]">
                     <th className="px-3 py-2.5 text-left text-[11px] text-slate-500 font-medium whitespace-nowrap">
                       งวด
                     </th>
@@ -413,7 +413,7 @@ export default async function LotteryPageContent({
                   {predRows.map((row, i) => (
                     <tr
                       key={`${row.date}-${i}`}
-                      className="border-b border-[#2A2D3E]/50 last:border-0 hover:bg-white/[0.02] transition-colors"
+                      className="border-b border-[#3D2060]/50 last:border-0 hover:bg-white/[0.02] transition-colors"
                     >
                       <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">
                         {row.date}
@@ -519,7 +519,7 @@ export default async function LotteryPageContent({
               const hits = done.filter((r) => r.hit3 || r.hit2).length;
               const pct = Math.round((hits / done.length) * 100);
               return (
-                <div className="border-t border-[#2A2D3E] px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
+                <div className="border-t border-[#3D2060] px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
                   <p className="text-[11px] text-slate-500">
                     วิเคราะห์ถูก{" "}
                     <span className="text-slate-300 font-bold">
@@ -528,7 +528,7 @@ export default async function LotteryPageContent({
                     งวด
                   </p>
                   <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-24 bg-[#0F1117] rounded-full overflow-hidden">
+                    <div className="h-1.5 w-24 bg-[#120820] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-emerald-500 rounded-full"
                         style={{ width: `${pct}%` }}
@@ -549,11 +549,11 @@ export default async function LotteryPageContent({
       {results.length > 0 && (
         <section className="space-y-3">
           <h2 className="text-base font-bold text-slate-200">📋 ผลย้อนหลัง</h2>
-          <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#2A2D3E]">
+                  <tr className="border-b border-[#3D2060]">
                     <th className="px-3 py-2.5 text-left text-[11px] text-slate-500 font-medium whitespace-nowrap">
                       วันที่
                     </th>
@@ -585,8 +585,8 @@ export default async function LotteryPageContent({
                   {results.slice(0, 10).map((r, i) => (
                     <tr
                       key={`${r.date}-${i}`}
-                      className={`border-b border-[#2A2D3E]/50 last:border-0 ${
-                        i === 0 ? "bg-[#C9A84C]/5" : ""
+                      className={`border-b border-[#3D2060]/50 last:border-0 ${
+                        i === 0 ? "bg-[#A855F7]/5" : ""
                       }`}
                     >
                       <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap text-xs">

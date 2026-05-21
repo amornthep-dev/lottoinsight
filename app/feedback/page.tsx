@@ -99,7 +99,7 @@ export default function FeedbackPage() {
       </div>
 
       {/* Form */}
-      <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl p-5 mb-8">
+      <div className="bg-[#1E1040] border border-[#3D2060] rounded-xl p-5 mb-8">
         {submitted ? (
           <div className="flex flex-col items-center gap-3 py-6 text-center">
             <CheckCircle className="w-10 h-10 text-green-400" />
@@ -121,7 +121,7 @@ export default function FeedbackPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="ไม่ระบุชื่อ"
                 maxLength={30}
-                className="bg-[#0F1117] border border-[#2A2D3E] rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                className="bg-[#120820] border border-[#3D2060] rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
               />
             </div>
 
@@ -136,7 +136,7 @@ export default function FeedbackPage() {
                     className={`px-3 py-1.5 rounded-lg text-xs border transition-all ${
                       category === c.value
                         ? c.color + " opacity-100"
-                        : "bg-transparent border-[#2A2D3E] text-slate-500 hover:border-slate-500"
+                        : "bg-transparent border-[#3D2060] text-slate-500 hover:border-slate-500"
                     }`}
                   >
                     {c.label}
@@ -153,7 +153,7 @@ export default function FeedbackPage() {
                 placeholder="เขียนความคิดเห็น ข้อเสนอแนะ หรือรายงานปัญหา..."
                 maxLength={500}
                 rows={4}
-                className="bg-[#0F1117] border border-[#2A2D3E] rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
+                className="bg-[#120820] border border-[#3D2060] rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
               />
               <span className="text-xs text-slate-500 text-right">{message.length}/500</span>
             </div>
@@ -194,7 +194,7 @@ export default function FeedbackPage() {
           items.map((item) => (
             <div
               key={item.id}
-              className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl p-4 flex flex-col gap-2"
+              className="bg-[#1E1040] border border-[#3D2060] rounded-xl p-4 flex flex-col gap-2"
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
@@ -214,7 +214,7 @@ export default function FeedbackPage() {
                 className={`flex items-center gap-1.5 text-xs self-start px-2.5 py-1 rounded-lg border transition-all ${
                   likedIds.has(item.id)
                     ? "border-blue-500/40 text-blue-400 bg-blue-500/10"
-                    : "border-[#2A2D3E] text-slate-500 hover:border-blue-500/40 hover:text-blue-400"
+                    : "border-[#3D2060] text-slate-500 hover:border-blue-500/40 hover:text-blue-400"
                 }`}
               >
                 <ThumbsUp className="w-3 h-3" />

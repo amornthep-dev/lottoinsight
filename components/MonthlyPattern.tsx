@@ -34,13 +34,13 @@ export default function MonthlyPattern() {
   const monthName = THAI_MONTHS[currentMonth];
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-2">
-          <Calendar size={15} className="text-[#C9A84C]" />
+          <Calendar size={15} className="text-[#A855F7]" />
           <div>
             <h2 className="text-base font-semibold text-slate-300">
-              เลขเด่นประจำเดือน<span className="text-[#C9A84C]"> {monthName}</span>
+              เลขเด่นประจำเดือน<span className="text-[#A855F7]"> {monthName}</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">เลขที่ออกบ่อยในเดือนนี้ของทุกปีย้อนหลัง</p>
           </div>
@@ -49,7 +49,7 @@ export default function MonthlyPattern() {
           {([2,3] as const).map(d => (
             <button key={d} onClick={() => setTab(d)}
               className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                tab === d ? "bg-[#C9A84C] text-[#0F1117]" : "bg-[#0F1117] text-slate-400 border border-[#2A2D3E]"
+                tab === d ? "bg-[#A855F7] text-[#120820]" : "bg-[#120820] text-slate-400 border border-[#3D2060]"
               }`}>
               ท้าย {d} ตัว
             </button>
@@ -63,15 +63,15 @@ export default function MonthlyPattern() {
         <div className="space-y-2">
           {stats.map(({ n, count, total }, i) => (
             <div key={n} className="flex items-center gap-3">
-              <span className={`text-xs font-bold w-4 text-center ${i < 3 ? "text-[#C9A84C]" : "text-slate-600"}`}>
+              <span className={`text-xs font-bold w-4 text-center ${i < 3 ? "text-[#A855F7]" : "text-slate-600"}`}>
                 {i+1}
               </span>
               <span className="font-mono font-bold text-slate-200 text-base w-12">{n}</span>
-              <div className="flex-1 h-2 bg-[#0F1117] rounded-full overflow-hidden">
+              <div className="flex-1 h-2 bg-[#120820] rounded-full overflow-hidden">
                 <div className="h-full rounded-full transition-all"
                   style={{
                     width: `${(count / Math.max(...stats.map(s=>s.count))) * 100}%`,
-                    backgroundColor: i < 3 ? "#C9A84C" : "#2A2D3E",
+                    backgroundColor: i < 3 ? "#A855F7" : "#3D2060",
                   }} />
               </div>
               <span className="text-xs text-slate-500 shrink-0">
@@ -82,7 +82,7 @@ export default function MonthlyPattern() {
         </div>
       )}
 
-      <div className="bg-[#0F1117] rounded-xl p-3">
+      <div className="bg-[#120820] rounded-xl p-3">
         <p className="text-xs text-slate-500">
           📊 ข้อมูลจาก {lotteryData.filter(d => parseInt(d.date.split("-")[1])-1 === currentMonth).length} งวดของเดือน{monthName}ในฐานข้อมูล
           · Pattern นี้ใช้ประกอบการตัดสินใจเท่านั้น

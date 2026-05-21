@@ -100,21 +100,21 @@ export default function FeedbackSection() {
   const displayed = showAll ? items : items.slice(0, 5);
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-4 border-b border-[#2A2D3E] flex items-center gap-2">
-        <MessageSquare size={16} className="text-[#C9A84C]" />
+      <div className="px-5 py-4 border-b border-[#3D2060] flex items-center gap-2">
+        <MessageSquare size={16} className="text-[#A855F7]" />
         <div>
           <h2 className="text-base font-semibold text-slate-300">แสดงความคิดเห็น</h2>
           <p className="text-xs text-slate-500">ช่วยเราพัฒนาเว็บให้ดีขึ้น — ทุกความเห็นมีคุณค่า</p>
         </div>
-        <span className="ml-auto text-xs text-slate-600 bg-[#0F1117] px-2.5 py-1 rounded-full">
+        <span className="ml-auto text-xs text-slate-600 bg-[#120820] px-2.5 py-1 rounded-full">
           {items.length} ความเห็น
         </span>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="px-5 py-4 space-y-3 border-b border-[#2A2D3E]">
+      <form onSubmit={handleSubmit} className="px-5 py-4 space-y-3 border-b border-[#3D2060]">
         {/* Category tabs */}
         <div className="flex gap-2 flex-wrap">
           {CATEGORIES.map(c => (
@@ -123,7 +123,7 @@ export default function FeedbackSection() {
               type="button"
               onClick={() => setCategory(c.value as FeedbackItem["category"])}
               className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                category === c.value ? `${c.bg} ${c.color}` : "bg-[#0F1117] text-slate-500 border-[#2A2D3E]"
+                category === c.value ? `${c.bg} ${c.color}` : "bg-[#120820] text-slate-500 border-[#3D2060]"
               }`}
             >
               {c.label}
@@ -138,7 +138,7 @@ export default function FeedbackSection() {
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder="ชื่อเล่น (ไม่บังคับ)"
-          className="w-full bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-700 focus:outline-none focus:border-[#C9A84C]/50"
+          className="w-full bg-[#120820] border border-[#3D2060] rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-700 focus:outline-none focus:border-[#A855F7]/50"
         />
 
         {/* Message */}
@@ -149,7 +149,7 @@ export default function FeedbackSection() {
             value={message}
             onChange={e => { setMessage(e.target.value); setError(""); }}
             placeholder="แชร์ความคิดเห็น ข้อเสนอแนะ หรือปัญหาที่พบ..."
-            className="w-full bg-[#0F1117] border border-[#2A2D3E] rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-700 focus:outline-none focus:border-[#C9A84C]/50 resize-none"
+            className="w-full bg-[#120820] border border-[#3D2060] rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-700 focus:outline-none focus:border-[#A855F7]/50 resize-none"
           />
           <span className="absolute bottom-2 right-3 text-[10px] text-slate-700">{message.length}/500</span>
         </div>
@@ -164,7 +164,7 @@ export default function FeedbackSection() {
             className={`flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold transition-all ${
               submitted
                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : "bg-[#C9A84C] text-[#0F1117] hover:bg-[#F0D080] disabled:opacity-60"
+                : "bg-[#A855F7] text-[#120820] hover:bg-[#C084FC] disabled:opacity-60"
             }`}
           >
             {submitting ? (
@@ -179,7 +179,7 @@ export default function FeedbackSection() {
       </form>
 
       {/* Comments list */}
-      <div className="divide-y divide-[#2A2D3E]/50">
+      <div className="divide-y divide-[#3D2060]/50">
         {loading ? (
           <div className="py-8 text-center">
             <Loader2 size={20} className="animate-spin text-slate-600 mx-auto" />
@@ -193,7 +193,7 @@ export default function FeedbackSection() {
             {displayed.map(item => (
               <div key={item.id} className="px-5 py-4 flex gap-3">
                 {/* Avatar */}
-                <div className="w-8 h-8 rounded-full bg-[#0F1117] border border-[#2A2D3E] flex items-center justify-center shrink-0 text-sm font-bold text-[#C9A84C]">
+                <div className="w-8 h-8 rounded-full bg-[#120820] border border-[#3D2060] flex items-center justify-center shrink-0 text-sm font-bold text-[#A855F7]">
                   {item.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -207,7 +207,7 @@ export default function FeedbackSection() {
                   <button
                     onClick={() => handleLike(item.id)}
                     className={`mt-2 flex items-center gap-1.5 text-xs transition-colors ${
-                      likedIds.has(item.id) ? "text-[#C9A84C]" : "text-slate-600 hover:text-slate-400"
+                      likedIds.has(item.id) ? "text-[#A855F7]" : "text-slate-600 hover:text-slate-400"
                     }`}
                   >
                     <ThumbsUp size={12} />

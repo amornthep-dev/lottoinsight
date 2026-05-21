@@ -35,20 +35,20 @@ function SectionTitle({ icon, title, sub }: { icon: React.ReactNode; title: stri
 function NumChip2({ entry }: { entry: typeof entries2[0] }) {
   const score = entry.score;
   const colors = [
-    "border-[#2A2D3E] text-slate-600 bg-[#0F1117]",
+    "border-[#3D2060] text-slate-600 bg-[#120820]",
     "border-blue-500/40 text-blue-400 bg-blue-500/5",
     "border-orange-400/40 text-orange-300 bg-orange-400/5",
     "border-yellow-400/60 text-yellow-300 bg-yellow-400/5",
-    "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10",
-    "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/15",
+    "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10",
+    "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/15",
   ];
   const badge = score >= 4 ? score : null;
   return (
     <span className={`relative inline-flex items-center justify-center font-mono font-bold text-sm px-2.5 py-1.5 rounded-lg border ${colors[Math.min(score, 5)]}`}>
       {entry.num}
       {badge && (
-        <span className={`absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[#0F1117] text-[8px] font-black
-          ${score === 5 ? "bg-[#C9A84C]" : "bg-yellow-400"}`}>{badge}</span>
+        <span className={`absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[#120820] text-[8px] font-black
+          ${score === 5 ? "bg-[#A855F7]" : "bg-yellow-400"}`}>{badge}</span>
       )}
       {score === 3 && (
         <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-orange-400 rounded-full flex items-center justify-center text-white text-[8px] font-black">3</span>
@@ -65,7 +65,7 @@ function LoShuGridDisplay() {
   const { d1, d2, n1, n2, highlightNums, prevNum2, candidates2 } = loshu;
 
   return (
-    <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <SectionTitle
         icon={<FlaskConical size={18} className="text-red-400" />}
         title="🟥 Lo Shu Grid — ตารางมังกรจีน"
@@ -84,15 +84,15 @@ function LoShuGridDisplay() {
                 key={num}
                 className={`w-14 h-14 flex flex-col items-center justify-center rounded-xl font-bold text-xl border transition-all
                   ${both
-                    ? "bg-[#C9A84C]/20 border-[#C9A84C] text-[#C9A84C]"
+                    ? "bg-[#A855F7]/20 border-[#A855F7] text-[#A855F7]"
                     : inN1
                       ? "bg-red-500/10 border-red-500/40 text-red-400"
                       : inN2
                         ? "bg-blue-500/10 border-blue-500/40 text-blue-400"
-                        : "bg-[#0F1117] border-[#2A2D3E] text-slate-600"}`}
+                        : "bg-[#120820] border-[#3D2060] text-slate-600"}`}
               >
                 <span>{num}</span>
-                {both && <span className="text-[8px] font-normal text-[#C9A84C]/70">d1+d2</span>}
+                {both && <span className="text-[8px] font-normal text-[#A855F7]/70">d1+d2</span>}
                 {inN1 && !both && <span className="text-[8px] font-normal text-red-400/70">d1</span>}
                 {inN2 && !both && <span className="text-[8px] font-normal text-blue-400/70">d2</span>}
               </div>
@@ -104,7 +104,7 @@ function LoShuGridDisplay() {
       <div className="flex gap-3 text-[10px] text-slate-500 justify-center flex-wrap">
         <span><span className="text-red-400">■</span> connected ถึง digit {d1}</span>
         <span><span className="text-blue-400">■</span> connected ถึง digit {d2}</span>
-        <span><span className="text-[#C9A84C]">■</span> ทั้งคู่</span>
+        <span><span className="text-[#A855F7]">■</span> ทั้งคู่</span>
       </div>
 
       {/* Candidates */}
@@ -113,8 +113,8 @@ function LoShuGridDisplay() {
         <div className="flex flex-wrap gap-1.5">
           {candidates2.slice(0, 30).map(n => (
             <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded border
-              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10 font-bold"
-              : "border-[#2A2D3E] text-slate-500"}`}>{n}</span>
+              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10 font-bold"
+              : "border-[#3D2060] text-slate-500"}`}>{n}</span>
           ))}
           {candidates2.length > 30 && <span className="text-xs text-slate-600">+{candidates2.length - 30} เลข</span>}
         </div>
@@ -128,7 +128,7 @@ function RSIDisplay() {
   const { digits, oversoldDigits, overboughtDigits, candidates2 } = rsi;
   const periods = 20;
   return (
-    <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <SectionTitle
         icon={<TrendingUp size={18} className="text-emerald-400" />}
         title="📈 RSI Score — ดัชนีร้อน/เย็น"
@@ -152,7 +152,7 @@ function RSIDisplay() {
                 ${isOversold ? "text-emerald-400" : isOver ? "text-red-400" : "text-slate-500"}`}>
                 {digit}
               </span>
-              <div className="flex-1 bg-[#0F1117] rounded-full h-4 overflow-hidden">
+              <div className="flex-1 bg-[#120820] rounded-full h-4 overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all ${barColor}`}
                   style={{ width: `${barW}%` }}
@@ -180,8 +180,8 @@ function RSIDisplay() {
         <div className="flex flex-wrap gap-1.5">
           {candidates2.slice(0, 25).map(n => (
             <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded border
-              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10 font-bold"
-              : "border-[#2A2D3E] text-slate-500"}`}>{n}</span>
+              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10 font-bold"
+              : "border-[#3D2060] text-slate-500"}`}>{n}</span>
           ))}
         </div>
       </div>
@@ -195,7 +195,7 @@ function FibDisplay() {
   const phiB = Math.round(seeds2[1] * 1.6180339887) % 100;
   const PHI = 1.618;
   return (
-    <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <SectionTitle
         icon={<Waves size={18} className="text-purple-400" />}
         title="🌀 Fibonacci Flow — การไหลของตัวเลข"
@@ -206,13 +206,13 @@ function FibDisplay() {
       <div className="flex items-center gap-1 flex-wrap justify-center">
         {[seeds2[0], seeds2[1], seeds2[2]].map((n, i) => (
           <span key={i} className="flex items-center gap-1">
-            <span className="font-mono font-bold text-xl px-3 py-1.5 bg-[#0F1117] border border-[#2A2D3E] rounded-xl text-slate-500">
+            <span className="font-mono font-bold text-xl px-3 py-1.5 bg-[#120820] border border-[#3D2060] rounded-xl text-slate-500">
               {String(n).padStart(2,"0")}
             </span>
             <span className="text-slate-700 text-xs">→</span>
           </span>
         ))}
-        <span className="font-mono font-bold text-xl px-3 py-2 bg-[#C9A84C]/10 border-2 border-[#C9A84C] rounded-xl text-[#C9A84C]">
+        <span className="font-mono font-bold text-xl px-3 py-2 bg-[#A855F7]/10 border-2 border-[#A855F7] rounded-xl text-[#A855F7]">
           {String(fibNext).padStart(2,"0")}
         </span>
       </div>
@@ -220,14 +220,14 @@ function FibDisplay() {
       {/* Formulas */}
       <div className="grid grid-cols-2 gap-2">
         {[
-          { label: "F(n) = a+b", formula: `${seeds2[2]}+${seeds2[1]}`, result: String(fibNext).padStart(2,"0"), color: "text-[#C9A84C]" },
+          { label: "F(n) = a+b", formula: `${seeds2[2]}+${seeds2[1]}`, result: String(fibNext).padStart(2,"0"), color: "text-[#A855F7]" },
           { label: "|a-b|", formula: `|${seeds2[2]}-${seeds2[1]}|`, result: String(fibDiff).padStart(2,"0"), color: "text-purple-400" },
           { label: "a × φ (1.618)", formula: `${seeds2[2]}×${PHI}`, result: String(phiA).padStart(2,"0"), color: "text-blue-400" },
           { label: "b × φ", formula: `${seeds2[1]}×${PHI}`, result: String(phiB).padStart(2,"0"), color: "text-blue-400" },
           { label: "Lucas (a+b+c)", formula: `${seeds2[2]}+${seeds2[1]}+${seeds2[0]}`, result: String(lucasNext).padStart(2,"0"), color: "text-emerald-400" },
           { label: "a ÷ φ", formula: `${seeds2[2]}÷${PHI}`, result: String(invPhiA).padStart(2,"0"), color: "text-orange-400" },
         ].map(({ label, formula, result, color }) => (
-          <div key={label} className="bg-[#0F1117] rounded-xl p-2.5 flex items-center justify-between gap-2">
+          <div key={label} className="bg-[#120820] rounded-xl p-2.5 flex items-center justify-between gap-2">
             <div>
               <p className="text-[10px] text-slate-600">{label}</p>
               <p className="text-[10px] text-slate-700 font-mono">{formula} mod 100</p>
@@ -242,8 +242,8 @@ function FibDisplay() {
         <div className="flex flex-wrap gap-1.5">
           {candidates2.slice(0, 25).map(n => (
             <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded border
-              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10 font-bold"
-              : "border-[#2A2D3E] text-slate-500"}`}>{n}</span>
+              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10 font-bold"
+              : "border-[#3D2060] text-slate-500"}`}>{n}</span>
           ))}
         </div>
       </div>
@@ -259,7 +259,7 @@ function KaprekarDisplay() {
   const chainBgs = ["bg-pink-500/5", "bg-violet-500/5", "bg-cyan-500/5", "bg-amber-500/5"];
 
   return (
-    <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <SectionTitle
         icon={<Link2 size={18} className="text-pink-400" />}
         title="🔗 Kaprekar Chain — ห่วงโซ่ตัวเลข"
@@ -276,8 +276,8 @@ function KaprekarDisplay() {
                 <span key={j} className="flex items-center gap-0.5">
                   <span className={`font-mono font-bold text-sm px-2 py-0.5 rounded-lg
                     ${j === 0
-                      ? `border-2 ${chainBorders[i]} ${chainColors[i]} bg-[#0F1117]`
-                      : "border border-[#2A2D3E] text-slate-400 bg-[#0F1117]"}`}>
+                      ? `border-2 ${chainBorders[i]} ${chainColors[i]} bg-[#120820]`
+                      : "border border-[#3D2060] text-slate-400 bg-[#120820]"}`}>
                     {String(n).padStart(2, "0")}
                   </span>
                   {j < chain.length - 1 && (
@@ -291,7 +291,7 @@ function KaprekarDisplay() {
       </div>
 
       {/* How it works */}
-      <div className="bg-[#0F1117] rounded-xl p-3">
+      <div className="bg-[#120820] rounded-xl p-3">
         <p className="text-[10px] text-slate-500 leading-relaxed">
           💡 <span className="text-slate-400">Kaprekar operation:</span> เรียงหลักใหม่ (มาก→น้อย) − (น้อย→มาก) mod 100
           {" "}เช่น 47 → sort desc = 74, asc = 47 → 74−47 = 27 → 72−27 = 45 → ...
@@ -303,8 +303,8 @@ function KaprekarDisplay() {
         <div className="flex flex-wrap gap-1.5">
           {candidates2.slice(0, 30).map(n => (
             <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded border
-              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10 font-bold"
-              : "border-[#2A2D3E] text-slate-500"}`}>{n}</span>
+              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10 font-bold"
+              : "border-[#3D2060] text-slate-500"}`}>{n}</span>
           ))}
           {candidates2.length > 30 && <span className="text-xs text-slate-600">+{candidates2.length - 30} เลข</span>}
         </div>
@@ -333,7 +333,7 @@ function TransitionDisplay() {
   const maxVote = Math.max(...votes);
 
   return (
-    <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <SectionTitle
         icon={<ArrowRight size={18} className="text-teal-400" />}
         title="🔀 Digit Transition — ห่วงโซ่มาร์คอฟ"
@@ -341,12 +341,12 @@ function TransitionDisplay() {
       />
 
       {/* Current draw → predicted */}
-      <div className="bg-[#0F1117] rounded-xl p-3">
+      <div className="bg-[#120820] rounded-xl p-3">
         <p className="text-[10px] text-slate-500 mb-2">งวดล่าสุด: <span className="font-mono font-bold text-teal-400">{curNum}</span> (d1={curD1}, d2={curD2}) → วิเคราะห์ top digit:</p>
         <div className="flex gap-2 flex-wrap">
           {nextDigits.map((d, i) => (
             <div key={d} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border
-              ${i === 0 ? "border-teal-400/60 bg-teal-400/10" : "border-[#2A2D3E] bg-[#0F1117]"}`}>
+              ${i === 0 ? "border-teal-400/60 bg-teal-400/10" : "border-[#3D2060] bg-[#120820]"}`}>
               <span className={`font-mono font-bold text-lg ${i === 0 ? "text-teal-400" : "text-slate-400"}`}>{d}</span>
               <span className="text-[10px] text-slate-600">#{i+1}</span>
             </div>
@@ -363,7 +363,7 @@ function TransitionDisplay() {
           return (
             <div key={d} className="flex items-center gap-2">
               <span className={`w-5 text-xs font-bold font-mono text-right shrink-0 ${isTop ? "text-teal-400" : "text-slate-600"}`}>{d}</span>
-              <div className="flex-1 bg-[#0F1117] rounded-full h-3 overflow-hidden">
+              <div className="flex-1 bg-[#120820] rounded-full h-3 overflow-hidden">
                 <div
                   className={`h-full rounded-full ${isTop ? "bg-teal-400" : "bg-slate-700"}`}
                   style={{ width: `${pct}%` }}
@@ -378,7 +378,7 @@ function TransitionDisplay() {
       </div>
 
       {/* How it works */}
-      <div className="bg-[#0F1117] rounded-xl p-3">
+      <div className="bg-[#120820] rounded-xl p-3">
         <p className="text-[10px] text-slate-500 leading-relaxed">
           💡 <span className="text-slate-400">Markov Chain:</span> สร้าง matrix 10×10 จากประวัติ P(digit_j ตามหลัง digit_i)
           {" "}→ weighted vote โดย 2 งวดล่าสุด weight = 40% ต่องวด
@@ -390,8 +390,8 @@ function TransitionDisplay() {
         <div className="flex flex-wrap gap-1.5">
           {candidates2.slice(0, 25).map(n => (
             <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded border
-              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10 font-bold"
-              : "border-[#2A2D3E] text-slate-500"}`}>{n}</span>
+              ${entries2.find(e=>e.num===n)?.score===5 ? "border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10 font-bold"
+              : "border-[#3D2060] text-slate-500"}`}>{n}</span>
           ))}
         </div>
       </div>
@@ -418,9 +418,9 @@ function TripleScoreBoard() {
   }
 
   return (
-    <div className="bg-[#1A1D2E] border border-[#C9A84C]/30 rounded-2xl p-5 space-y-5">
+    <div className="bg-[#1E1040] border border-[#A855F7]/30 rounded-2xl p-5 space-y-5">
       <div className="flex items-start gap-3">
-        <Trophy size={18} className="text-[#C9A84C] mt-0.5 shrink-0" />
+        <Trophy size={18} className="text-[#A855F7] mt-0.5 shrink-0" />
         <div>
           <h2 className="text-base font-bold text-slate-200">🏆 Triple Score V2 — เลขที่ผ่านหลายมิติ</h2>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -433,7 +433,7 @@ function TripleScoreBoard() {
       {score5.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-bold text-[#A855F7] bg-[#A855F7]/10 border border-[#A855F7]/30 px-2 py-0.5 rounded-full">
               🥇 5/5 method
             </span>
             <span className="text-[10px] text-slate-600">ผ่านทุก: Lo Shu + RSI + Fib + Kaprekar + Transition</span>
@@ -504,8 +504,8 @@ function TripleScoreBoard() {
       )}
 
       {/* Legend */}
-      <div className="bg-[#0F1117] rounded-xl p-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-slate-500">
-        <span><span className="text-[#C9A84C] font-bold">■</span> 5/5 = ทุก method เห็นพ้อง</span>
+      <div className="bg-[#120820] rounded-xl p-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-slate-500">
+        <span><span className="text-[#A855F7] font-bold">■</span> 5/5 = ทุก method เห็นพ้อง</span>
         <span><span className="text-yellow-300 font-bold">■</span> 4/5 = เกือบครบ</span>
         <span><span className="text-orange-400 font-bold">■</span> 3/5 = ครึ่งทาง</span>
         <span><span className="text-blue-400 font-bold">■</span> 2/5 = อ้างอิง</span>
@@ -521,7 +521,7 @@ function TripleScore3Board() {
   const score3 = entries3.filter(e => e.score === 3);
   const score2 = entries3.filter(e => e.score === 2);
   return (
-    <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-5 space-y-4">
+    <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-5 space-y-4">
       <div>
         <h2 className="text-sm font-bold text-slate-300">Triple Score V2 — เลขท้าย 3 ตัว</h2>
         <p className="text-xs text-slate-500 mt-0.5">รวม permutation ทุกแบบ (เลขกลับนับด้วย)</p>
@@ -529,10 +529,10 @@ function TripleScore3Board() {
 
       {score5.length > 0 && (
         <div>
-          <p className="text-xs text-[#C9A84C] font-bold mb-2">🥇 5/5 method</p>
+          <p className="text-xs text-[#A855F7] font-bold mb-2">🥇 5/5 method</p>
           <div className="flex flex-wrap gap-2">
             {score5.map(e => (
-              <span key={e.num} className="font-mono font-bold text-sm px-2.5 py-1.5 rounded-lg border-2 border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10">
+              <span key={e.num} className="font-mono font-bold text-sm px-2.5 py-1.5 rounded-lg border-2 border-[#A855F7] text-[#A855F7] bg-[#A855F7]/10">
                 {e.num}
               </span>
             ))}
@@ -595,7 +595,7 @@ export default function AnalysisPage() {
         <div className="flex items-center gap-3 mb-1 flex-wrap">
           <span className="text-2xl">🔱</span>
           <h1 className="text-2xl font-bold text-slate-200">Triple Score V2 Analysis</h1>
-          <span className="inline-flex items-center gap-1.5 bg-[#1A1D2E] border border-[#C9A84C]/40 text-[#C9A84C] text-xs font-bold px-3 py-1 rounded-full">
+          <span className="inline-flex items-center gap-1.5 bg-[#1E1040] border border-[#A855F7]/40 text-[#A855F7] text-xs font-bold px-3 py-1 rounded-full">
             🇹🇭 หวยไทย · เลข 2 ตัว
           </span>
         </div>
@@ -610,7 +610,7 @@ export default function AnalysisPage() {
             { icon: "🔗", label: "Kaprekar Chain",  sub: "ห่วงโซ่ตัวเลขแบบซ้ำ",    color: "border-pink-500/30 text-pink-400"     },
             { icon: "🔀", label: "Digit Transition",sub: "Markov Chain จากข้อมูลจริง",color: "border-teal-500/30 text-teal-400"   },
           ].map(({ icon, label, sub, color }) => (
-            <div key={label} className={`shrink-0 bg-[#1A1D2E] border ${color} rounded-xl px-4 py-2`}>
+            <div key={label} className={`shrink-0 bg-[#1E1040] border ${color} rounded-xl px-4 py-2`}>
               <p className="text-sm font-bold text-slate-300 whitespace-nowrap">{icon} {label}</p>
               <p className="text-[10px] text-slate-600 whitespace-nowrap">{sub}</p>
             </div>
@@ -629,29 +629,29 @@ export default function AnalysisPage() {
           { href: "#triple",     label: "🏆 Triple Score" },
         ].map(({ href, label }) => (
           <a key={href} href={href}
-            className="shrink-0 whitespace-nowrap text-xs px-3 py-1.5 rounded-full bg-[#1A1D2E] border border-[#2A2D3E] text-slate-400 hover:border-[#C9A84C]/40 hover:text-slate-200 transition-colors">
+            className="shrink-0 whitespace-nowrap text-xs px-3 py-1.5 rounded-full bg-[#1E1040] border border-[#3D2060] text-slate-400 hover:border-[#A855F7]/40 hover:text-slate-200 transition-colors">
             {label}
           </a>
         ))}
       </div>
 
       {/* Context Banner — งวดที่กำลังคำนวณ */}
-      <div className="rounded-2xl overflow-hidden border border-[#C9A84C]/30">
+      <div className="rounded-2xl overflow-hidden border border-[#A855F7]/30">
         {/* บน: งวดเป้าหมาย */}
-        <div className="bg-[#C9A84C]/10 px-5 py-3 flex items-center justify-between flex-wrap gap-2">
+        <div className="bg-[#A855F7]/10 px-5 py-3 flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            <span className="text-[#C9A84C] text-lg">🎯</span>
+            <span className="text-[#A855F7] text-lg">🎯</span>
             <div>
-              <p className="text-[10px] text-[#C9A84C]/70 uppercase tracking-wider font-semibold">กำลังคำนวณสำหรับงวด</p>
-              <p className="text-lg font-bold text-[#C9A84C]">{nextDrawStr}</p>
+              <p className="text-[10px] text-[#A855F7]/70 uppercase tracking-wider font-semibold">กำลังคำนวณสำหรับงวด</p>
+              <p className="text-lg font-bold text-[#A855F7]">{nextDrawStr}</p>
             </div>
           </div>
-          <span className="text-[10px] text-[#C9A84C]/60 bg-[#C9A84C]/10 px-2 py-1 rounded-full">
+          <span className="text-[10px] text-[#A855F7]/60 bg-[#A855F7]/10 px-2 py-1 rounded-full">
             อัปเดตอัตโนมัติทุกงวด
           </span>
         </div>
         {/* ล่าง: ข้อมูล seed */}
-        <div className="bg-[#0F1117] px-5 py-2.5 flex flex-wrap gap-4 items-center">
+        <div className="bg-[#120820] px-5 py-2.5 flex flex-wrap gap-4 items-center">
           <div className="flex items-center gap-1.5">
             <Info size={11} className="text-slate-600" />
             <p className="text-[10px] text-slate-500">ใช้ข้อมูลล่าสุด:</p>
@@ -680,7 +680,7 @@ export default function AnalysisPage() {
       <TripleScore3Board />
 
       {/* Disclaimer */}
-      <div className="bg-[#1A1D2E] border border-yellow-500/20 rounded-xl p-4">
+      <div className="bg-[#1E1040] border border-yellow-500/20 rounded-xl p-4">
         <p className="text-xs text-slate-400 leading-relaxed">
           ⚠️ <span className="text-yellow-400 font-semibold">หมายเหตุสำคัญ:</span>{" "}
           Triple Score V2 คือการวิเคราะห์สถิติเชิงคณิตศาสตร์ 5 มิติ{" "}
@@ -693,7 +693,7 @@ export default function AnalysisPage() {
       {/* Story Board CTA */}
       <div className="flex justify-center">
         <Link href="/leaderboard"
-          className="text-sm text-slate-500 hover:text-[#C9A84C] transition-colors underline">
+          className="text-sm text-slate-500 hover:text-[#A855F7] transition-colors underline">
           ดู Story Board — Triple Score V2 vs ผลจริง 10 งวดล่าสุด →
         </Link>
       </div>

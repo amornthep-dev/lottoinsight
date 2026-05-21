@@ -12,8 +12,8 @@ const SITE_URL =
           ? `https://${process.env.VERCEL_URL}`
           : "http://localhost:3000");
 
-const OG_TITLE  = "LottoInsight — วิเคราะห์สถิติหวยไทย · ข้อมูลจริง 100 งวด";
-const OG_DESC   = "สถิติหวยไทย 10 ปี · Phase System · Triple Score · Signal Convergence — วิเคราะห์จากข้อมูลจริง ไม่ใช่การทำนาย เหมาะสำหรับคนอยากรู้แนวโน้มเชิงสถิติ";
+const OG_TITLE  = "LottoInsight — วิเคราะห์สถิติหวย 6 ประเภท";
+const OG_DESC   = "วิเคราะห์สถิติหวยไทย · หวยฮานอย · หวยลาวพัฒนา จากข้อมูลย้อนหลัง — ผลวิเคราะห์สถิติเท่านั้น ไม่สามารถยืนยันผลจริงได้";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | LottoInsight",
   },
   description: OG_DESC,
-  keywords: ["หวย", "สถิติหวย", "หวยไทย", "เลขเด็ด", "วิเคราะห์หวย", "หวยสถิติ", "lotto thailand", "thai lottery statistics"],
+  keywords: ["หวย", "สถิติหวย", "หวยไทย", "หวยฮานอย", "หวยลาวพัฒนา", "เลขเด็ด", "วิเคราะห์หวย", "lotto statistics"],
   authors: [{ name: "LottoInsight" }],
   openGraph: {
     type: "website",
@@ -52,7 +52,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#C9A84C",
+  themeColor: "#A855F7",
 };
 
 export default function RootLayout({
@@ -63,7 +63,7 @@ export default function RootLayout({
   return (
     <html lang="th" className="h-full">
 
-      <body className="min-h-full flex flex-col bg-[#0F1117] text-slate-200">
+      <body className="min-h-full flex flex-col bg-[#120820] text-slate-200">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

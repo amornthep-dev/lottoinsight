@@ -1,15 +1,14 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#1A1D2E] border-t border-[#2A2D3E] mt-16">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Disclaimer */}
-        <p className="text-xs text-slate-600 text-center mb-6">
-          ⚠️ ข้อมูลสถิติเพื่อการศึกษาเท่านั้น — ไม่มีระบบใดทำนายลอตเตอรีได้ · LottoInsight ไม่รับผิดชอบต่อการตัดสินใจของผู้ใช้
+    <footer className="bg-[#1E1040] border-t border-[#3D2060] mt-12">
+      <div className="max-w-3xl mx-auto px-4 py-6">
+        <p className="text-xs text-slate-600 text-center mb-4 leading-relaxed">
+          ⚠️ ผลวิเคราะห์สถิติเท่านั้น ไม่สามารถยืนยันผลจริงได้ · ไม่มีระบบใดทำนายผลรางวัลได้
+          · LottoInsight ไม่รับผิดชอบต่อการตัดสินใจของผู้ใช้
         </p>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
-          <p>© 2568 LottoInsight — วิเคราะห์สถิติหวยไทย</p>
-          <p>ข้อมูลอ้างอิงจากสำนักงานสลากกินแบ่งรัฐบาล (GLO)</p>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
+          <p>© 2569 LottoInsight</p>
+          <p>ข้อมูลเพื่อการศึกษาด้านสถิติเท่านั้น</p>
         </div>
       </div>
     </footer>

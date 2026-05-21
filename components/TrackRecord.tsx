@@ -50,10 +50,10 @@ export default function TrackRecord() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
       {/* Header */}
       <button onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-5 hover:bg-[#2A2D3E]/20 transition-colors">
+        className="w-full flex items-center justify-between p-5 hover:bg-[#3D2060]/20 transition-colors">
         <div className="flex items-center gap-2">
           <TrendingUp size={16} className="text-emerald-400" />
           <span className="text-sm font-semibold text-slate-300">Track Record — ผลย้อนหลัง</span>
@@ -63,13 +63,13 @@ export default function TrackRecord() {
       </button>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-3 gap-px bg-[#2A2D3E]">
+      <div className="grid grid-cols-3 gap-px bg-[#3D2060]">
         {[
           { label: "ท้าย 2 ตัว (Phase 1 · 10 เลข)", rate: hitRate2_p1, color: "text-emerald-400" },
           { label: "ท้าย 3 ตัว (Phase 1 · 20 เลข)", rate: hitRate3_p1, color: "text-blue-400" },
           { label: "ท้าย 2 ตัว (Phase 3 · 5 เลข)", rate: hitRate2_p3, color: "text-orange-400" },
         ].map(({ label, rate, color }) => (
-          <div key={label} className="bg-[#1A1D2E] p-4 text-center">
+          <div key={label} className="bg-[#1E1040] p-4 text-center">
             <p className={`text-2xl font-bold ${color}`}>{rate}%</p>
             <p className="text-xs text-slate-600 mt-0.5 leading-tight">{label}</p>
           </div>
@@ -77,11 +77,11 @@ export default function TrackRecord() {
       </div>
 
       {open && (
-        <div className="border-t border-[#2A2D3E]">
+        <div className="border-t border-[#3D2060]">
           <p className="text-xs text-slate-600 px-5 pt-4 pb-2">
             ⚠️ Track Record นี้คำนวณจากข้อมูลย้อนหลัง ไม่ใช่การการันตีอนาคต
           </p>
-          <div className="divide-y divide-[#2A2D3E]/50">
+          <div className="divide-y divide-[#3D2060]/50">
             {RECORDS.map((r, i) => (
               <div key={i} className="px-5 py-3 flex items-center gap-4 flex-wrap">
                 <span className="text-xs text-slate-500 w-32 shrink-0">{r.date}</span>

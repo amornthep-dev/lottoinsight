@@ -50,12 +50,12 @@ export default function ShareCard() {
   };
 
   return (
-    <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl overflow-hidden">
+    <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
       <button
         onClick={canNativeShare ? handleNativeShare : () => setOpen(!open)}
-        className="w-full flex items-center justify-between p-5 hover:bg-[#2A2D3E]/20 transition-colors">
+        className="w-full flex items-center justify-between p-5 hover:bg-[#3D2060]/20 transition-colors">
         <div className="flex items-center gap-2 min-w-0">
-          <Share2 size={16} className="text-[#C9A84C] shrink-0" />
+          <Share2 size={16} className="text-[#A855F7] shrink-0" />
           <span className="text-sm font-semibold text-slate-300 whitespace-nowrap">แชร์เลขแนะนำ</span>
           <span className="text-xs text-slate-600 whitespace-nowrap">
             {canNativeShare ? "แตะเพื่อแชร์" : "LINE · Facebook · Copy"}
@@ -65,9 +65,9 @@ export default function ShareCard() {
       </button>
 
       {open && (
-        <div className="px-5 pb-5 space-y-4 border-t border-[#2A2D3E]">
+        <div className="px-5 pb-5 space-y-4 border-t border-[#3D2060]">
           {/* Preview Card */}
-          <div className="mt-4 bg-[#0F1117] border border-[#2A2D3E] rounded-xl p-4 font-mono text-xs text-slate-400 leading-relaxed whitespace-pre-wrap">
+          <div className="mt-4 bg-[#120820] border border-[#3D2060] rounded-xl p-4 font-mono text-xs text-slate-400 leading-relaxed whitespace-pre-wrap">
             {shareText}
           </div>
 
@@ -88,7 +88,7 @@ export default function ShareCard() {
 
             {/* Copy */}
             <button onClick={handleCopy}
-              className="flex items-center gap-2 bg-[#2A2D3E] text-slate-300 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#3A3D4E] transition-all">
+              className="flex items-center gap-2 bg-[#3D2060] text-slate-300 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#3A3D4E] transition-all">
               {copied ? <CheckCheck size={15} className="text-emerald-400" /> : <Copy size={15} />}
               {copied ? "คัดลอกแล้ว!" : "Copy ข้อความ"}
             </button>

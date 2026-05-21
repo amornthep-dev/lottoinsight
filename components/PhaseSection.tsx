@@ -90,9 +90,9 @@ export default function PhaseSection() {
 
   if (!mounted) return (
     <section className="space-y-4 animate-pulse">
-      <div className="h-7 w-48 bg-[#1A1D2E] rounded-lg" />
-      <div className="h-4 w-64 bg-[#1A1D2E] rounded" />
-      <div className="h-[160px] bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl" />
+      <div className="h-7 w-48 bg-[#1E1040] rounded-lg" />
+      <div className="h-4 w-64 bg-[#1E1040] rounded" />
+      <div className="h-[160px] bg-[#1E1040] border border-[#3D2060] rounded-2xl" />
     </section>
   );
 
@@ -107,9 +107,9 @@ export default function PhaseSection() {
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <h2 className="text-lg font-semibold text-slate-300">📊 กลุ่มเลขสถิติสูงประจำงวด</h2>
-          <div className="flex items-center gap-1.5 bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-lg px-3 py-1.5 shrink-0">
-            <CalendarDays size={13} className="text-[#C9A84C]" />
-            <span className="text-xs font-bold text-[#C9A84C]">งวด {nextDrawLabel}</span>
+          <div className="flex items-center gap-1.5 bg-[#A855F7]/10 border border-[#A855F7]/30 rounded-lg px-3 py-1.5 shrink-0">
+            <CalendarDays size={13} className="text-[#A855F7]" />
+            <span className="text-xs font-bold text-[#A855F7]">งวด {nextDrawLabel}</span>
           </div>
         </div>
         <p className="text-xs text-slate-600">
@@ -154,7 +154,7 @@ export default function PhaseSection() {
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${p.badge}`}>{p.label}</span>
                     {isCurrent
-                      ? <span className="text-xs bg-[#C9A84C] text-[#0F1117] px-2 py-0.5 rounded-full font-bold animate-pulse">● ปัจจุบัน</span>
+                      ? <span className="text-xs bg-[#A855F7] text-[#120820] px-2 py-0.5 rounded-full font-bold animate-pulse">● ปัจจุบัน</span>
                       : <span className="text-xs bg-slate-700 text-slate-400 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle size={10} /> เปิดแล้ว</span>
                     }
                     <span className={`text-lg font-bold whitespace-nowrap ${isCurrent ? "text-slate-200" : "text-slate-600"}`}>{p.sets} ชุด</span>
@@ -190,15 +190,15 @@ export default function PhaseSection() {
                             <div className="flex items-center gap-2 mb-2">
                               <TrendingDown size={12} className="text-slate-600" />
                               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{label}</p>
-                              <span className="text-[10px] text-slate-700 bg-[#0F1117] px-1.5 py-0.5 rounded">{nums.length} ชุด</span>
+                              <span className="text-[10px] text-slate-700 bg-[#120820] px-1.5 py-0.5 rounded">{nums.length} ชุด</span>
                             </div>
                             <div className="flex flex-wrap gap-1.5">
                               {visible.map((n, i) => (
                                 <span key={i}
-                                  className={`font-mono font-bold text-sm px-2.5 py-1 bg-[#0F1117] rounded-lg border ${
+                                  className={`font-mono font-bold text-sm px-2.5 py-1 bg-[#120820] rounded-lg border ${
                                     isCurrent
                                       ? `border-current/30 ${p.numColor}`
-                                      : "border-[#2A2D3E] text-slate-600"
+                                      : "border-[#3D2060] text-slate-600"
                                   }`}>
                                   {n}
                                 </span>
@@ -206,8 +206,8 @@ export default function PhaseSection() {
                               {hasMore && !isExpanded && (
                                 <button
                                   onClick={() => toggleExpand(p.id)}
-                                  className={`font-mono text-sm px-2.5 py-1 bg-[#0F1117] rounded-lg border border-dashed ${
-                                    isCurrent ? `border-current/20 ${p.numColor} opacity-60` : "border-[#2A2D3E] text-slate-700"
+                                  className={`font-mono text-sm px-2.5 py-1 bg-[#120820] rounded-lg border border-dashed ${
+                                    isCurrent ? `border-current/20 ${p.numColor} opacity-60` : "border-[#3D2060] text-slate-700"
                                   } hover:opacity-100 transition-opacity`}>
                                   +{nums.length - PREVIEW_COUNT}
                                 </button>
@@ -240,7 +240,7 @@ export default function PhaseSection() {
 
           // ล็อก
           return (
-            <div key={p.id} className="border border-[#2A2D3E] rounded-2xl p-5 bg-[#1A1D2E]/30">
+            <div key={p.id} className="border border-[#3D2060] rounded-2xl p-5 bg-[#1E1040]/30">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Lock size={16} className="text-slate-600" />

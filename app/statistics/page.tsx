@@ -26,10 +26,10 @@ function HeatMap2() {
               className="aspect-square rounded flex items-center justify-center text-[9px] font-bold cursor-default transition-transform hover:scale-110"
               style={{
                 backgroundColor: freq === 0
-                  ? "#1A1D2E"
+                  ? "#1E1040"
                   : `rgba(201,168,76,${0.15 + intensity * 0.85})`,
-                color: intensity > 0.5 ? "#0F1117" : intensity > 0 ? "#C9A84C" : "#3A3D4E",
-                border: `1px solid ${freq === 0 ? "#2A2D3E" : `rgba(201,168,76,${0.3 + intensity * 0.5})`}`,
+                color: intensity > 0.5 ? "#120820" : intensity > 0 ? "#A855F7" : "#3A3D4E",
+                border: `1px solid ${freq === 0 ? "#3D2060" : `rgba(201,168,76,${0.3 + intensity * 0.5})`}`,
               }}>
               {n}
             </div>
@@ -38,7 +38,7 @@ function HeatMap2() {
       </div>
       <div className="flex items-center gap-2 mt-3 text-xs text-slate-500">
         <div className="flex items-center gap-1">
-          <div className="w-3 h-3 rounded bg-[#1A1D2E] border border-[#2A2D3E]" /> ไม่เคยออก
+          <div className="w-3 h-3 rounded bg-[#1E1040] border border-[#3D2060]" /> ไม่เคยออก
         </div>
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 rounded" style={{ backgroundColor: "rgba(201,168,76,0.3)" }} /> ออกน้อย
@@ -64,7 +64,7 @@ function FreqBar({ data, color, label }: { data: Record<string,number>, color: s
           <YAxis dataKey="num" type="category" tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
             width={36} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ background: "#1A1D2E", border: "1px solid #2A2D3E", borderRadius: 8 }}
+            contentStyle={{ background: "#1E1040", border: "1px solid #3D2060", borderRadius: 8 }}
             labelStyle={{ color: "#e2e8f0", fontFamily: "monospace" }}
             itemStyle={{ color }}
             formatter={(v) => [`${v} ครั้ง`, "ออก"]}
@@ -82,7 +82,7 @@ function FreqBar({ data, color, label }: { data: Record<string,number>, color: s
 function TrendLine() {
   // Top 5 เลขท้าย 2 ตัวที่ออกบ่อยที่สุด
   const top5_2 = Object.entries(stats.allTimeFreq2).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([n]) => n);
-  const colors = ["#C9A84C", "#60a5fa", "#34d399", "#f472b6", "#a78bfa"];
+  const colors = ["#A855F7", "#60a5fa", "#34d399", "#f472b6", "#a78bfa"];
 
   // สร้างข้อมูล timeline ย้อนหลัง 15 งวด
   const timeline = lotteryData.slice(0, 15).reverse().map(d => {
@@ -103,11 +103,11 @@ function TrendLine() {
       <h3 className="text-sm font-semibold text-slate-300 mb-3">📈 แนวโน้มสะสม เลขท้าย 2 ตัว (Top 5)</h3>
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={cumData} margin={{ left: 4, right: 16, top: 4, bottom: 4 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#2A2D3E" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#3D2060" />
           <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 9 }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ background: "#1A1D2E", border: "1px solid #2A2D3E", borderRadius: 8 }}
+            contentStyle={{ background: "#1E1040", border: "1px solid #3D2060", borderRadius: 8 }}
             labelStyle={{ color: "#e2e8f0" }}
           />
           <Legend wrapperStyle={{ fontSize: 11, color: "#94a3b8" }} />
@@ -142,7 +142,7 @@ function PositionFreqChart() {
                 {data.map(({ digit, count }) => (
                   <div key={digit} className="flex items-center gap-2">
                     <span className="text-xs font-mono w-4 text-slate-400">{digit}</span>
-                    <div className="flex-1 bg-[#2A2D3E] rounded-full h-2">
+                    <div className="flex-1 bg-[#3D2060] rounded-full h-2">
                       <div className="h-2 rounded-full transition-all"
                         style={{ width: `${(count / maxC) * 100}%`, backgroundColor: colors[pi] }} />
                     </div>
@@ -178,7 +178,7 @@ function GapAnalysis({ digits }: { digits: 2 | 3 }) {
           <YAxis dataKey="num" type="category" tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
             width={36} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ background: "#1A1D2E", border: "1px solid #2A2D3E", borderRadius: 8 }}
+            contentStyle={{ background: "#1E1040", border: "1px solid #3D2060", borderRadius: 8 }}
             labelStyle={{ color: "#e2e8f0", fontFamily: "monospace" }}
             formatter={(v, name) => [name === "gap" ? `${v} งวด` : `${v} ครั้ง`, name === "gap" ? "ห่าง" : "ออกทั้งหมด"]}
           />
@@ -204,7 +204,7 @@ function NeverAppearedSection() {
         <p className="text-xs text-slate-500 mb-2">เลขท้าย 2 ตัว ที่ไม่เคยออก ({never2.length} เลข)</p>
         <div className="flex flex-wrap gap-1.5">
           {never2.map(n => (
-            <span key={n} className="font-mono text-sm px-2 py-0.5 bg-[#1A1D2E] border border-[#2A2D3E] rounded-lg text-slate-600">{n}</span>
+            <span key={n} className="font-mono text-sm px-2 py-0.5 bg-[#1E1040] border border-[#3D2060] rounded-lg text-slate-600">{n}</span>
           ))}
         </div>
       </div>
@@ -212,7 +212,7 @@ function NeverAppearedSection() {
         <p className="text-xs text-slate-500 mb-2">เลขท้าย 3 ตัว ที่ไม่เคยออก ({never3.length} เลข)</p>
         <div className="flex flex-wrap gap-1 max-h-40 overflow-y-auto">
           {never3.slice(0, 60).map(n => (
-            <span key={n} className="font-mono text-xs px-1.5 py-0.5 bg-[#1A1D2E] border border-[#2A2D3E] rounded text-slate-600">{n}</span>
+            <span key={n} className="font-mono text-xs px-1.5 py-0.5 bg-[#1E1040] border border-[#3D2060] rounded text-slate-600">{n}</span>
           ))}
           {never3.length > 60 && <span className="text-xs text-slate-600 self-center">+{never3.length - 60} เลข</span>}
         </div>
@@ -243,7 +243,7 @@ function DrawDateSplitChart({ digits }: { digits: 2 | 3 }) {
           <YAxis dataKey="num" type="category" tick={{ fill: "#94a3b8", fontSize: 11, fontFamily: "monospace" }}
             width={36} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ background: "#1A1D2E", border: "1px solid #2A2D3E", borderRadius: 8 }}
+            contentStyle={{ background: "#1E1040", border: "1px solid #3D2060", borderRadius: 8 }}
             labelStyle={{ color: "#e2e8f0", fontFamily: "monospace" }}
           />
           <Legend wrapperStyle={{ fontSize: 11, color: "#94a3b8" }} />
@@ -278,7 +278,7 @@ function DigitSumSection({ digits }: { digits: 2 | 3 }) {
                 style={{
                   height: `${(count / maxCount) * 80}px`,
                   minHeight: count > 0 ? 2 : 0,
-                  backgroundColor: isHot ? "#C9A84C" : "#2A2D3E",
+                  backgroundColor: isHot ? "#A855F7" : "#3D2060",
                 }} />
               <span className="text-[8px] text-slate-600">{sum}</span>
             </div>
@@ -320,12 +320,12 @@ export default function StatisticsPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "งวดทั้งหมด", value: String(stats.totalDraws), color: "text-[#C9A84C]" },
+          { label: "งวดทั้งหมด", value: String(stats.totalDraws), color: "text-[#A855F7]" },
           { label: "เลขท้าย 2 ตัวที่ออก", value: String(Object.keys(stats.allTimeFreq2).length), color: "text-emerald-400" },
           { label: "เลขท้าย 3 ตัวที่ออก", value: String(Object.keys(stats.allTimeFreq3).length), color: "text-blue-400" },
           { label: "ไม่เคยออก (2 ตัว)", value: String(getNeverAppeared2().length), color: "text-orange-400" },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl p-4 text-center">
+          <div key={label} className="bg-[#1E1040] border border-[#3D2060] rounded-xl p-4 text-center">
             <p className="text-xs text-slate-500 mb-1">{label}</p>
             <p className={`text-2xl font-bold ${color}`}>{value}</p>
           </div>
@@ -338,8 +338,8 @@ export default function StatisticsPage() {
           <button key={t.id} onClick={() => setTab(t.id)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
               tab === t.id
-                ? "bg-[#C9A84C] text-[#0F1117]"
-                : "bg-[#1A1D2E] text-slate-400 border border-[#2A2D3E] hover:border-[#C9A84C]/40 hover:text-slate-300"
+                ? "bg-[#A855F7] text-[#120820]"
+                : "bg-[#1E1040] text-slate-400 border border-[#3D2060] hover:border-[#A855F7]/40 hover:text-slate-300"
             }`}>
             {t.label}
           </button>
@@ -347,14 +347,14 @@ export default function StatisticsPage() {
       </div>
 
       {/* Tab Content */}
-      <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-6 space-y-8">
+      <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-6 space-y-8">
 
         {tab === "overview" && (
           <>
             <HeatMap2 />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <TrendLine />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <PositionFreqChart />
           </>
         )}
@@ -362,9 +362,9 @@ export default function StatisticsPage() {
         {tab === "freq3" && (
           <>
             <FreqBar data={stats.allTimeFreq3} color="#60a5fa" label="📊 ความถี่ตลอดกาล — เลขท้าย 3 ตัว (Top 20)" />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <FreqBar data={stats.recent30Freq3} color="#34d399" label="🕐 ความถี่ใน 30 งวดล่าสุด — เลขท้าย 3 ตัว" />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <PositionFreqChart />
           </>
         )}
@@ -372,9 +372,9 @@ export default function StatisticsPage() {
         {tab === "freq2" && (
           <>
             <HeatMap2 />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <FreqBar data={stats.allTimeFreq2} color="#a78bfa" label="📊 ความถี่ตลอดกาล — เลขท้าย 2 ตัว (Top 20)" />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <FreqBar data={stats.recent30Freq2} color="#f472b6" label="🕐 ความถี่ใน 30 งวดล่าสุด — เลขท้าย 2 ตัว" />
           </>
         )}
@@ -382,7 +382,7 @@ export default function StatisticsPage() {
         {tab === "gap" && (
           <>
             <GapAnalysis digits={2} />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <GapAnalysis digits={3} />
           </>
         )}
@@ -390,21 +390,21 @@ export default function StatisticsPage() {
         {tab === "trend" && (
           <>
             <TrendLine />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <FreqBar data={stats.trendScore3} color="#34d399" label="🚀 Trending Score — เลขท้าย 3 ตัว (ออกเพิ่มขึ้นเรื่อยๆ)" />
-            <hr className="border-[#2A2D3E]" />
-            <FreqBar data={stats.trendScore2} color="#C9A84C" label="🚀 Trending Score — เลขท้าย 2 ตัว" />
+            <hr className="border-[#3D2060]" />
+            <FreqBar data={stats.trendScore2} color="#A855F7" label="🚀 Trending Score — เลขท้าย 2 ตัว" />
           </>
         )}
 
         {tab === "datesum" && (
           <>
             <DrawDateSplitChart digits={2} />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <DrawDateSplitChart digits={3} />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <DigitSumSection digits={2} />
-            <hr className="border-[#2A2D3E]" />
+            <hr className="border-[#3D2060]" />
             <DigitSumSection digits={3} />
           </>
         )}

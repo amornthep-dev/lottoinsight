@@ -39,7 +39,7 @@ function permsOf2(s: string): string[] {
 function NumChip({ n, actual }: { n: string; actual: string }) {
   const hit = permsOf2(actual).includes(n);
   if (hit) return (
-    <span className="relative inline-flex items-center justify-center font-mono font-bold text-sm px-2 py-1 rounded-lg border-2 border-[#C9A84C] bg-[#C9A84C]/15 text-[#C9A84C]">
+    <span className="relative inline-flex items-center justify-center font-mono font-bold text-sm px-2 py-1 rounded-lg border-2 border-[#A855F7] bg-[#A855F7]/15 text-[#A855F7]">
       {n}
       <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-emerald-500 rounded-full flex items-center justify-center">
         <CheckCircle size={9} className="text-white" />
@@ -47,7 +47,7 @@ function NumChip({ n, actual }: { n: string; actual: string }) {
     </span>
   );
   return (
-    <span className="inline-flex items-center justify-center font-mono font-bold text-sm px-2 py-1 rounded-lg border border-[#2A2D3E] bg-[#0F1117] text-slate-500">
+    <span className="inline-flex items-center justify-center font-mono font-bold text-sm px-2 py-1 rounded-lg border border-[#3D2060] bg-[#120820] text-slate-500">
       {n}
     </span>
   );
@@ -64,13 +64,13 @@ function DrawCard({ draw, isOpen, onToggle }: {
   const anyHit = permHitsCount > 0;
 
   return (
-    <div className={`bg-[#1A1D2E] border rounded-2xl overflow-hidden transition-all ${
-      anyHit ? "border-[#C9A84C]/40" : "border-[#2A2D3E]"
+    <div className={`bg-[#1E1040] border rounded-2xl overflow-hidden transition-all ${
+      anyHit ? "border-[#A855F7]/40" : "border-[#3D2060]"
     }`}>
       {/* Header */}
       <button
         onClick={onToggle}
-        className="w-full px-5 py-4 flex items-center justify-between hover:bg-[#2A2D3E]/20 transition-colors text-left"
+        className="w-full px-5 py-4 flex items-center justify-between hover:bg-[#3D2060]/20 transition-colors text-left"
       >
         <div className="flex items-center gap-4 flex-wrap">
           <div>
@@ -79,7 +79,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] text-slate-600">ออก:</span>
-            <span className="font-mono font-bold text-xl text-[#C9A84C]">{draw.actual2}</span>
+            <span className="font-mono font-bold text-xl text-[#A855F7]">{draw.actual2}</span>
           </div>
           {/* Method badges */}
           <div className="hidden sm:flex items-center gap-1 flex-wrap">
@@ -91,7 +91,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
                 <span key={m} className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                   hit  ? `${cfg.bg} ${cfg.color} border ${cfg.border}` :
                   perm ? `bg-emerald-400/10 text-emerald-400 border border-emerald-400/30` :
-                  "bg-[#0F1117] text-slate-700 border border-[#1A1D2E]"
+                  "bg-[#120820] text-slate-700 border border-[#1E1040]"
                 }`}>
                   {hit ? "✓" : perm ? "↔" : "·"} {cfg.short}
                 </span>
@@ -101,7 +101,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {exactHitsCount > 0 && (
-            <span className="text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-bold text-[#A855F7] bg-[#A855F7]/10 px-2 py-0.5 rounded-full">
               {exactHitsCount} method ถูก
             </span>
           )}
@@ -114,7 +114,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
 
       {/* Expanded body */}
       {isOpen && (
-        <div className="border-t border-[#2A2D3E] divide-y divide-[#2A2D3E]/40">
+        <div className="border-t border-[#3D2060] divide-y divide-[#3D2060]/40">
           {METHODS_ORDER.map(m => {
             const { core, exactHit, permHit } = draw.methods[m];
             const cfg = METHOD_CFG[m];
@@ -126,7 +126,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
                   </span>
                   <span className="text-[10px] text-slate-600">{core.length} core เลข</span>
                   {exactHit && (
-                    <span className="text-xs font-bold text-[#C9A84C] flex items-center gap-1">
+                    <span className="text-xs font-bold text-[#A855F7] flex items-center gap-1">
                       <CheckCircle size={11} /> ถูก exact ✨
                     </span>
                   )}
@@ -144,7 +144,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
           })}
 
           {/* Score ≥2 consensus row */}
-          <div className="px-5 py-3.5 bg-[#0F1117]/60">
+          <div className="px-5 py-3.5 bg-[#120820]/60">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700/60 text-slate-400">
                 Score ≥2 (2+ method เห็นพ้อง)
@@ -153,7 +153,7 @@ function DrawCard({ draw, isOpen, onToggle }: {
                 {draw.top.length} เลข → +เลขกลับ: {draw.focusedPoolSize} เลข
               </span>
               {draw.focusedPerm && (
-                <span className="text-xs font-bold text-[#C9A84C]">🎯 อยู่ใน Focused Pool</span>
+                <span className="text-xs font-bold text-[#A855F7]">🎯 อยู่ใน Focused Pool</span>
               )}
             </div>
             {draw.top.length > 0 ? (
@@ -163,8 +163,8 @@ function DrawCard({ draw, isOpen, onToggle }: {
                   return (
                     <span key={e.num} className={`inline-flex items-center gap-1 font-mono font-bold text-sm px-2 py-1 rounded-lg border ${
                       isActualPerm
-                        ? "border-[#C9A84C] bg-[#C9A84C]/15 text-[#C9A84C]"
-                        : "border-[#2A2D3E] bg-[#0F1117] text-slate-400"
+                        ? "border-[#A855F7] bg-[#A855F7]/15 text-[#A855F7]"
+                        : "border-[#3D2060] bg-[#120820] text-slate-400"
                     }`}>
                       {e.num}
                       <span className="text-[9px] opacity-50">{e.sc}/5</span>
@@ -193,7 +193,7 @@ export default function LeaderboardPage() {
       {/* Header */}
       <section>
         <h1 className="text-2xl font-bold text-slate-200 flex items-center gap-2">
-          <FlaskConical size={24} className="text-[#C9A84C]" />
+          <FlaskConical size={24} className="text-[#A855F7]" />
           Backtest ย้อนหลัง — Triple Score
         </h1>
         <p className="text-slate-500 mt-1 text-sm">
@@ -219,7 +219,7 @@ export default function LeaderboardPage() {
           </div>
           <Link
             href="/analysis"
-            className="inline-block text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-3 py-1.5 rounded-lg hover:bg-[#C9A84C]/20 transition-colors"
+            className="inline-block text-xs font-bold text-[#A855F7] bg-[#A855F7]/10 border border-[#A855F7]/30 px-3 py-1.5 rounded-lg hover:bg-[#A855F7]/20 transition-colors"
           >
             ดู Triple Score งวดนี้ →
           </Link>
@@ -227,7 +227,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Disclaimer */}
-      <div className="bg-[#0F1117] border border-yellow-600/20 rounded-xl p-4 flex gap-3">
+      <div className="bg-[#120820] border border-yellow-600/20 rounded-xl p-4 flex gap-3">
         <AlertTriangle size={15} className="text-yellow-500 shrink-0 mt-0.5" />
         <p className="text-xs text-slate-400 leading-relaxed">
           <span className="text-yellow-400 font-semibold">สถิติย้อนหลัง — ไม่ใช่การทำนาย </span>
@@ -250,8 +250,8 @@ export default function LeaderboardPage() {
             const isGood = efficiency >= 1.5;
 
             return (
-              <div key={m} className={`bg-[#1A1D2E] border rounded-xl p-4 text-center space-y-1 ${
-                isGood ? cfg.border : "border-[#2A2D3E]"
+              <div key={m} className={`bg-[#1E1040] border rounded-xl p-4 text-center space-y-1 ${
+                isGood ? cfg.border : "border-[#3D2060]"
               }`}>
                 <p className={`text-2xl font-bold ${isGood ? cfg.color : "text-slate-300"}`}>
                   {stats.exact}
@@ -273,7 +273,7 @@ export default function LeaderboardPage() {
       </section>
 
       {/* How to read */}
-      <div className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-xl p-5 grid md:grid-cols-3 gap-5 text-xs">
+      <div className="bg-[#1E1040] border border-[#3D2060] rounded-xl p-5 grid md:grid-cols-3 gap-5 text-xs">
         <div>
           <p className="font-bold text-slate-300 mb-1.5">🔢 Core Pool คืออะไร?</p>
           <p className="text-slate-500 leading-relaxed">
@@ -318,7 +318,7 @@ export default function LeaderboardPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#1A1D2E] border border-[#2A2D3E] rounded-2xl p-6 text-center space-y-3">
+      <section className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-6 text-center space-y-3">
         <p className="text-3xl">🔱</p>
         <h3 className="text-lg font-bold text-slate-200">ดู Triple Score งวดนี้แบบ Real-time</h3>
         <p className="text-slate-400 text-sm max-w-md mx-auto">
@@ -327,7 +327,7 @@ export default function LeaderboardPage() {
         </p>
         <Link
           href="/analysis"
-          className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#0F1117] px-8 py-2.5 rounded-xl font-bold hover:bg-[#F0D080] transition-colors"
+          className="inline-flex items-center gap-2 bg-[#A855F7] text-[#120820] px-8 py-2.5 rounded-xl font-bold hover:bg-[#C084FC] transition-colors"
         >
           <FlaskConical size={16} />
           ไปดู Triple Score งวดนี้ →

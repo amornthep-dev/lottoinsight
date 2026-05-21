@@ -51,7 +51,7 @@ export default async function Image() {
           {/* Eyebrow */}
           <div style={{
             fontSize: 13,
-            color: "#C9A84C",
+            color: "#A855F7",
             letterSpacing: "0.3em",
             textTransform: "uppercase",
             marginBottom: 16,
@@ -64,7 +64,7 @@ export default async function Image() {
           <div style={{
             fontSize: 96,
             fontWeight: 900,
-            color: "#C9A84C",
+            color: "#A855F7",
             lineHeight: 0.95,
             letterSpacing: "-0.03em",
             marginBottom: 16,
@@ -88,7 +88,7 @@ export default async function Image() {
           <div style={{ display: "flex", gap: 10, marginBottom: 28, flexWrap: "wrap" }}>
             {[
               { t: "Phase 1·2·3",  c: "#34d399" },
-              { t: "Triple Score", c: "#C9A84C" },
+              { t: "Triple Score", c: "#A855F7" },
               { t: "Signal Conv.", c: "#a78bfa" },
             ].map(({ t, c }) => (
               <div key={t} style={{
@@ -127,7 +127,7 @@ export default async function Image() {
           position: "absolute",
           bottom: 0, left: 0, right: 0,
           height: 3,
-          background: "linear-gradient(to right, transparent 0%, #C9A84C 30%, #C9A84C 70%, transparent 100%)",
+          background: "linear-gradient(to right, transparent 0%, #A855F7 30%, #A855F7 70%, transparent 100%)",
           display: "flex",
         }} />
       </div>
