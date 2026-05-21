@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 
-const FILE = path.join(process.cwd(), "data", "feedback.json");
+// ตั้งค่า APPS_SCRIPT_URL ใน Vercel Environment Variables
+// ดูวิธีตั้งค่าได้ที่ /docs/apps-script-setup.md
+const WEBHOOK = process.env.APPS_SCRIPT_URL ?? "";
 
 export interface FeedbackItem {
   id: string;
@@ -13,25 +13,23 @@ export interface FeedbackItem {
   likes: number;
 }
 
-function readAll(): FeedbackItem[] {
+// GET — ดึง feedback จาก Apps Script
+export async function GET() {
+  if (!WEBHOOK) return NextResponse.json([]);
   try {
-    return JSON.parse(fs.readFileSync(FILE, "utf-8"));
+    const res = await fetch(`${WEBHOOK}?action=feedback`, {
+      signal: AbortSignal.timeout(8000),
+      cache: "no-store",
+    });
+    if (!res.ok) return NextResponse.json([]);
+    const data = await res.json();
+    return NextResponse.json(Array.isArray(data) ? data : []);
   } catch {
-    return [];
+    return NextResponse.json([]);
   }
 }
 
-function writeAll(data: FeedbackItem[]) {
-  fs.writeFileSync(FILE, JSON.stringify(data, null, 2), "utf-8");
-}
-
-// GET — return all feedback (newest first)
-export async function GET() {
-  const all = readAll().reverse();
-  return NextResponse.json(all);
-}
-
-// POST — add new feedback
+// POST — บันทึก feedback ใหม่
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { name, category, message } = body;
@@ -46,26 +44,43 @@ export async function POST(req: NextRequest) {
   const item: FeedbackItem = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     name: (name || "").trim().slice(0, 30) || "ไม่ระบุชื่อ",
-    category: ["suggest", "like", "dislike", "other"].includes(category) ? category : "other",
+    category: ["suggest", "like", "dislike", "other"].includes(category)
+      ? category
+      : "other",
     message: message.trim(),
     createdAt: new Date().toISOString(),
     likes: 0,
   };
 
-  const all = readAll();
-  all.push(item);
-  writeAll(all);
+  if (WEBHOOK) {
+    try {
+      await fetch(WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "feedback", ...item }),
+        signal: AbortSignal.timeout(8000),
+      });
+    } catch {
+      // บันทึกไม่สำเร็จ แต่ไม่ block user
+    }
+  }
 
   return NextResponse.json(item, { status: 201 });
 }
 
-// PATCH — like a feedback item
+// PATCH — กด like
 export async function PATCH(req: NextRequest) {
   const { id } = await req.json();
-  const all = readAll();
-  const idx = all.findIndex(f => f.id === id);
-  if (idx === -1) return NextResponse.json({ error: "ไม่พบ" }, { status: 404 });
-  all[idx].likes += 1;
-  writeAll(all);
-  return NextResponse.json(all[idx]);
+  if (!WEBHOOK) return NextResponse.json({ ok: true });
+
+  try {
+    await fetch(WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "like", id }),
+      signal: AbortSignal.timeout(8000),
+    });
+  } catch {}
+
+  return NextResponse.json({ ok: true });
 }

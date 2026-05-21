@@ -24,9 +24,19 @@ function ComingSoonModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) setSubmitted(true);
+    if (!email.trim()) return;
+    try {
+      await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+    } catch {
+      // บันทึกไม่สำเร็จ แต่ยังแสดง success ให้ user
+    }
+    setSubmitted(true);
   };
 
   return (
