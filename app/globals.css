@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --background: #0D1526;
-  --foreground: #E8EEFF;
-  --gold: #F0B429;
-  --gold-light: #FFD166;
-  --dark-card: #162033;
-  --dark-border: #253554;
+  --background: #1A0A14;
+  --foreground: #FFE8F4;
+  --gold: #FF6FA8;
+  --gold-light: #FFB3D4;
+  --dark-card: #2D1022;
+  --dark-border: #4A1A38;
 }
 
 body {
