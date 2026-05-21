@@ -121,7 +121,7 @@ export default async function LotteryPageContent({
         .map((n) => n.trim().padStart(2, "0"));
 
       const actual = actualByDate.get(p.date);
-      const a3 = actual ? pad(actual.prize3, 3) : "";
+      const a3 = actual ? pad(derive3Digit(actual), 3) : "";
       const a2a = actual ? pad(actual.prize2, 2) : "";
       const a2b = actual?.prize2bottom ? pad(actual.prize2bottom, 2) : "";
 
