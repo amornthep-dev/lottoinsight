@@ -1,4 +1,5 @@
-import { fetchSheetResults, fetchPredictions } from "@/lib/sheets";
+import { fetchPredictions } from "@/lib/sheets";
+import { fetchSupabaseResults, CONFIG_TO_SUPABASE_TYPE } from "@/lib/supabase-results";
 import { generateAnalysis } from "@/lib/analysis";
 import type { LotteryConfig } from "@/lib/lottery-config";
 import CountdownTimer from "./CountdownTimer";
@@ -17,10 +18,10 @@ function NumberCard({
   digits: 2 | 3;
 }) {
   return (
-    <div className="bg-[#120820] border border-[#3D2060] hover:border-[#A855F7]/40 rounded-xl py-3 px-1 text-center transition-colors">
-      <p className="text-[10px] text-slate-700 mb-1">#{rank}</p>
+    <div className="bg-[#FFB8CC] hover:bg-[#F9AAC0] rounded-xl py-3 px-1 text-center transition-colors shadow-sm">
+      <p className="text-[10px] text-[#1E2229]/50 mb-1">#{rank}</p>
       <p
-        className={`font-bold text-[#A855F7] font-mono tracking-widest leading-none ${
+        className={`font-bold text-[#1E2229] font-mono tracking-widest leading-none ${
           digits === 3 ? "text-2xl" : "text-3xl"
         }`}
       >
@@ -35,8 +36,9 @@ export default async function LotteryPageContent({
 }: {
   config: LotteryConfig;
 }) {
+  const supabaseType = CONFIG_TO_SUPABASE_TYPE[config.id] ?? config.id;
   const [results, allPredictions] = await Promise.all([
-    fetchSheetResults(config.sheetGid),
+    fetchSupabaseResults(supabaseType),
     fetchPredictions(),
   ]);
 
@@ -90,6 +92,18 @@ export default async function LotteryPageContent({
   // กรองเฉพาะ lottery ที่ตรงกับหน้านี้ แล้ว join กับ actual results
   const predictions = allPredictions.filter((p) => p.lottery === config.id);
 
+  // แปลงวันที่จาก Sheets ให้เป็น AD เต็ม เช่น "23/5/69" → "23/5/2026"
+  // รองรับทั้ง: "23/5/69" (BE ย่อ), "23/5/2569" (BE เต็ม), "23/5/2026" (AD)
+  function normalizePredDate(d: string): string {
+    const parts = d.split("/");
+    if (parts.length !== 3) return d;
+    const [day, month, year] = parts;
+    const y = parseInt(year);
+    if (y < 100) return `${day}/${month}/${y + 2500 - 543}`;  // BE ย่อ → AD
+    if (y > 2400) return `${day}/${month}/${y - 543}`;         // BE เต็ม → AD
+    return d;                                                   // AD แล้ว
+  }
+
   // สร้าง map จาก date → actual result (ใช้ date เป็น key)
   const actualByDate = new Map<string, (typeof results)[0]>();
   for (const r of results) {
@@ -120,7 +134,7 @@ export default async function LotteryPageContent({
         .filter(Boolean)
         .map((n) => n.trim().padStart(2, "0"));
 
-      const actual = actualByDate.get(p.date);
+      const actual = actualByDate.get(normalizePredDate(p.date));
       const a3 = actual ? pad(derive3Digit(actual), 3) : "";
       const a2a = actual ? pad(actual.prize2, 2) : "";
       const a2b = actual?.prize2bottom ? pad(actual.prize2bottom, 2) : "";
@@ -146,11 +160,11 @@ export default async function LotteryPageContent({
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
       {/* ── Page title ──────────────────────────────────── */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-[#1E2229] flex items-center gap-2">
           <span className="text-3xl">{config.flag}</span>
           <span>{config.name}</span>
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-sm text-[#8A94A6] mt-1">
           วิเคราะห์จากสถิติย้อนหลัง 30 งวดล่าสุด
         </p>
       </div>
@@ -173,9 +187,9 @@ export default async function LotteryPageContent({
 
       {/* ── No data state ───────────────────────────────── */}
       {noData && (
-        <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl p-8 text-center">
-          <p className="text-slate-500 text-sm">ยังไม่มีข้อมูล</p>
-          <p className="text-slate-600 text-xs mt-1">
+        <div className="bg-white shadow-sm border border-[#FFD6E7] rounded-2xl p-8 text-center">
+          <p className="text-[#8A94A6] text-sm">ยังไม่มีข้อมูล</p>
+          <p className="text-[#8A94A6] text-xs mt-1">
             กรุณาเพิ่มข้อมูลใน Google Sheets
           </p>
         </div>
@@ -184,16 +198,16 @@ export default async function LotteryPageContent({
       {/* ── Analysis ────────────────────────────────────── */}
       {!noData && (
         <section className="space-y-3">
-          <h2 className="text-base font-bold text-slate-200">
+          <h2 className="text-base font-bold text-[#1E2229]">
             📊 ผลวิเคราะห์งวดถัดไป
           </h2>
 
           {/* 3-digit — แสดงเฉพาะหวยที่มีรางวัล 3 ตัว */}
           {config.show3Digit && (
-            <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-[#3D2060]">
-                <h3 className="font-semibold text-slate-200">เลข 3 ตัว</h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+            <div className="bg-white shadow-sm border border-[#FFD6E7] rounded-2xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-[#FFD6E7]">
+                <h3 className="font-semibold text-[#1E2229]">เลข 3 ตัว</h3>
+                <p className="text-xs text-[#8A94A6] mt-0.5">
                   {analysis.threeDigit.length} ชุดที่น่าสนใจจากสถิติ
                 </p>
               </div>
@@ -211,10 +225,10 @@ export default async function LotteryPageContent({
           )}
 
           {/* 2-digit */}
-          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
-            <div className="px-4 py-3 border-b border-[#3D2060]">
-              <h3 className="font-semibold text-slate-200">เลข 2 ตัว</h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+          <div className="bg-white shadow-sm border border-[#FFD6E7] rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-[#FFD6E7]">
+              <h3 className="font-semibold text-[#1E2229]">เลข 2 ตัว</h3>
+              <p className="text-xs text-[#8A94A6] mt-0.5">
                 {analysis.twoDigit.length} ชุดที่น่าสนใจจากสถิติ
               </p>
             </div>
@@ -231,15 +245,15 @@ export default async function LotteryPageContent({
           </div>
 
           {/* Methodology accordion */}
-          <details className="bg-[#1E1040] border border-[#3D2060] rounded-xl overflow-hidden group">
-            <summary className="px-4 py-3 cursor-pointer flex items-center justify-between text-sm text-slate-400 hover:text-slate-200 transition-colors select-none [list-style:none] [&::-webkit-details-marker]:hidden">
+          <details className="bg-white shadow-sm border border-[#FFD6E7] rounded-xl overflow-hidden group">
+            <summary className="px-4 py-3 cursor-pointer flex items-center justify-between text-sm text-[#1E2229] hover:text-[#1E2229] transition-colors select-none [list-style:none] [&::-webkit-details-marker]:hidden">
               <span>🔍 ดูวิธีคำนวณ</span>
-              <span className="text-slate-600 group-open:rotate-180 transition-transform duration-200 inline-block">
+              <span className="text-[#8A94A6] group-open:rotate-180 transition-transform duration-200 inline-block">
                 ▼
               </span>
             </summary>
-            <div className="px-4 pb-4 pt-3 border-t border-[#3D2060] space-y-2">
-              <p className="text-[11px] text-slate-600 mb-3">
+            <div className="px-4 pb-4 pt-3 border-t border-[#FFD6E7] space-y-2">
+              <p className="text-[11px] text-[#8A94A6] mb-3">
                 แต่ละชุดถูกคัดเลือกด้วยวิธีต่างกัน:
               </p>
               {[
@@ -252,13 +266,13 @@ export default async function LotteryPageContent({
                   key={`${item.label}-${item.number}-${i}`}
                   className="flex items-center gap-3 text-xs"
                 >
-                  <span className="font-mono font-bold text-[#A855F7] min-w-[2.5rem]">
+                  <span className="font-mono font-bold text-[#F9AAC0] min-w-[2.5rem]">
                     {item.number}
                   </span>
-                  <span className="text-slate-600 bg-[#120820] px-1.5 py-0.5 rounded text-[10px]">
+                  <span className="text-[#8A94A6] bg-white shadow-sm px-1.5 py-0.5 rounded text-[10px]">
                     {item.label}
                   </span>
-                  <span className="text-slate-500">{item.method}</span>
+                  <span className="text-[#8A94A6]">{item.method}</span>
                 </div>
               ))}
             </div>
@@ -269,15 +283,15 @@ export default async function LotteryPageContent({
       {/* ── Comparison ──────────────────────────────────── */}
       {lastResult && prevAnalysis && !noData && (
         <section className="space-y-3">
-          <h2 className="text-base font-bold text-slate-200">
+          <h2 className="text-base font-bold text-[#1E2229]">
             🔄 งวดที่แล้ว — เทียบผล
           </h2>
-          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
+          <div className="bg-white shadow-sm border border-[#FFD6E7] rounded-2xl overflow-hidden">
             {/* header row */}
-            <div className="px-4 py-2.5 border-b border-[#3D2060] flex items-center justify-between gap-2 flex-wrap">
-              <p className="text-sm text-slate-300">
+            <div className="px-4 py-2.5 border-b border-[#FFD6E7] flex items-center justify-between gap-2 flex-wrap">
+              <p className="text-sm text-[#1E2229]">
                 ผลจริงงวด{" "}
-                <span className="font-mono text-slate-200">
+                <span className="font-mono text-[#1E2229]">
                   {lastResult.date}
                 </span>
               </p>
@@ -293,7 +307,7 @@ export default async function LotteryPageContent({
                   </span>
                 )}
                 {(!config.show3Digit || !hit3) && !hit2 && (
-                  <span className="text-xs text-slate-600">ไม่ตรง</span>
+                  <span className="text-xs text-[#8A94A6]">ไม่ตรง</span>
                 )}
               </div>
             </div>
@@ -302,7 +316,7 @@ export default async function LotteryPageContent({
               {/* 3-digit comparison — เฉพาะหวยที่มีรางวัล 3 ตัว */}
               {config.show3Digit && (
                 <div>
-                  <p className="text-[11px] text-slate-500 mb-2">
+                  <p className="text-[11px] text-[#8A94A6] mb-2">
                     ที่วิเคราะห์ไว้ · เลข 3 ตัว
                   </p>
                   <div className="flex flex-wrap gap-1.5">
@@ -312,17 +326,17 @@ export default async function LotteryPageContent({
                         className={`font-mono font-bold text-sm px-2 py-1 rounded-lg ${
                           n === actual3
                             ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                            : "bg-[#120820] text-slate-400"
+                            : "bg-white shadow-sm text-[#1E2229]"
                         }`}
                       >
                         {n}
                       </span>
                     ))}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-3 mb-1">
+                  <p className="text-[11px] text-[#8A94A6] mt-3 mb-1">
                     ผลจริง
                   </p>
-                  <span className="font-mono font-bold text-2xl text-[#A855F7]">
+                  <span className="font-mono font-bold text-2xl text-[#F9AAC0]">
                     {actual3 || "—"}
                   </span>
                 </div>
@@ -330,7 +344,7 @@ export default async function LotteryPageContent({
 
               {/* 2-digit comparison */}
               <div>
-                <p className="text-[11px] text-slate-500 mb-2">
+                <p className="text-[11px] text-[#8A94A6] mb-2">
                   ที่วิเคราะห์ไว้ · เลข 2 ตัว
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -340,32 +354,32 @@ export default async function LotteryPageContent({
                       className={`font-mono font-bold text-sm px-2 py-1 rounded-lg ${
                         n === actual2a || n === actual2b
                           ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : "bg-[#120820] text-slate-400"
+                          : "bg-white shadow-sm text-[#1E2229]"
                       }`}
                     >
                       {n}
                     </span>
                   ))}
                 </div>
-                <p className="text-[11px] text-slate-500 mt-3 mb-1">
+                <p className="text-[11px] text-[#8A94A6] mt-3 mb-1">
                   ผลจริง
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
                   {actual2a && (
-                    <span className="font-mono font-bold text-2xl text-[#A855F7]">
+                    <span className="font-mono font-bold text-2xl text-[#F9AAC0]">
                       {actual2a}
                     </span>
                   )}
                   {actual2b && actual2b !== actual2a && (
                     <>
-                      <span className="text-slate-600 text-xs">·</span>
+                      <span className="text-[#8A94A6] text-xs">·</span>
                       <span className="font-mono font-bold text-2xl text-purple-400">
                         {actual2b}
                       </span>
                     </>
                   )}
                   {!actual2a && !actual2b && (
-                    <span className="text-slate-600">—</span>
+                    <span className="text-[#8A94A6]">—</span>
                   )}
                 </div>
               </div>
@@ -377,34 +391,83 @@ export default async function LotteryPageContent({
       {/* ── Prediction history ──────────────────────────── */}
       {predRows.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-base font-bold text-slate-200">
+          <h2 className="text-base font-bold text-[#1E2229]">
             🎯 ประวัติการวิเคราะห์จากสถิติ
           </h2>
-          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
-            <div className="overflow-x-auto">
+          <div className="bg-white shadow-sm border border-[#FFD6E7] rounded-2xl overflow-hidden">
+            {/* Mobile card view — แสดงเฉพาะหน้าจอเล็ก */}
+          <div className="sm:hidden divide-y divide-[#FFD6E7]">
+            {predRows.map((row, i) => (
+              <div key={`m-${row.date}-${i}`} className="px-4 py-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-[#1E2229]">{row.date}</span>
+                  <span>
+                    {!row.hasActual ? (
+                      <span className="text-[10px] text-[#8A94A6]">⏳ รอผล</span>
+                    ) : row.hit3 || row.hit2 ? (
+                      <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">✓ ถูก</span>
+                    ) : (
+                      <span className="text-xs text-[#8A94A6]">✗ ไม่ถูก</span>
+                    )}
+                  </span>
+                </div>
+                {config.show3Digit && row.nums3.length > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] text-[#8A94A6] shrink-0 w-12">3 ตัว:</span>
+                    <div className="flex gap-1 flex-wrap">
+                      {row.nums3.map((n) => (
+                        <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded ${row.hasActual && n === row.actual3 ? "bg-emerald-500/20 text-emerald-400 font-bold" : "text-[#1E2229]"}`}>{n}</span>
+                      ))}
+                    </div>
+                    {row.hasActual && (
+                      <span className={`font-mono text-xs font-bold ${row.hit3 ? "text-emerald-400" : "text-[#8A94A6]"}`}>
+                        → {row.actual3 || "—"}
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] text-[#8A94A6] shrink-0 w-12">2 ตัว:</span>
+                  <div className="flex gap-1 flex-wrap">
+                    {row.nums2.map((n) => (
+                      <span key={n} className={`font-mono text-xs px-1.5 py-0.5 rounded ${row.hasActual && (n === row.actual2a || n === row.actual2b) ? "bg-emerald-500/20 text-emerald-400 font-bold" : "text-[#1E2229]"}`}>{n}</span>
+                    ))}
+                  </div>
+                  {row.hasActual && (
+                    <span className={`font-mono text-xs font-bold ${row.hit2 ? "text-emerald-400" : "text-[#8A94A6]"}`}>
+                      → {row.actual2a || "—"}{row.actual2b && row.actual2b !== row.actual2a ? ` · ${row.actual2b}` : ""}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop table — ซ่อนบนมือถือ */}
+          <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-[#3D2060]">
-                    <th className="px-3 py-2.5 text-left text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                  <tr className="border-b border-[#FFD6E7]">
+                    <th className="px-3 py-2.5 text-left text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                       งวด
                     </th>
                     {config.show3Digit && (
-                      <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                      <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                         วิเคราะห์ 3 ตัว
                       </th>
                     )}
-                    <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                    <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                       วิเคราะห์ 2 ตัว
                     </th>
                     {config.show3Digit && (
-                      <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                      <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                         ออก 3 ตัว
                       </th>
                     )}
-                    <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                    <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                       ออก 2 ตัว
                     </th>
-                    <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                    <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                       ผล
                     </th>
                   </tr>
@@ -413,9 +476,9 @@ export default async function LotteryPageContent({
                   {predRows.map((row, i) => (
                     <tr
                       key={`${row.date}-${i}`}
-                      className="border-b border-[#3D2060]/50 last:border-0 hover:bg-white/[0.02] transition-colors"
+                      className="border-b border-[#FFD6E7] last:border-0 hover:bg-white/[0.02] transition-colors"
                     >
-                      <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap">
+                      <td className="px-3 py-2.5 text-[#1E2229] whitespace-nowrap">
                         {row.date}
                       </td>
 
@@ -430,14 +493,14 @@ export default async function LotteryPageContent({
                                   className={`font-mono font-bold px-1.5 py-0.5 rounded ${
                                     row.hasActual && n === row.actual3
                                       ? "bg-emerald-500/20 text-emerald-400"
-                                      : "text-slate-400"
+                                      : "text-[#1E2229]"
                                   }`}
                                 >
                                   {n}
                                 </span>
                               ))
                             ) : (
-                              <span className="text-slate-700">—</span>
+                              <span className="text-[#1E2229]">—</span>
                             )}
                           </div>
                         </td>
@@ -454,14 +517,14 @@ export default async function LotteryPageContent({
                                   row.hasActual &&
                                   (n === row.actual2a || n === row.actual2b)
                                     ? "bg-emerald-500/20 text-emerald-400"
-                                    : "text-slate-400"
+                                    : "text-[#1E2229]"
                                 }`}
                               >
                                 {n}
                               </span>
                             ))
                           ) : (
-                            <span className="text-slate-700">—</span>
+                            <span className="text-[#1E2229]">—</span>
                           )}
                         </div>
                       </td>
@@ -472,13 +535,13 @@ export default async function LotteryPageContent({
                           {row.hasActual ? (
                             <span
                               className={
-                                row.hit3 ? "text-emerald-400" : "text-slate-400"
+                                row.hit3 ? "text-emerald-400" : "text-[#1E2229]"
                               }
                             >
                               {row.actual3 || "—"}
                             </span>
                           ) : (
-                            <span className="text-slate-700 text-[10px]">รอผล</span>
+                            <span className="text-[#1E2229] text-[10px]">รอผล</span>
                           )}
                         </td>
                       )}
@@ -486,25 +549,25 @@ export default async function LotteryPageContent({
                       {/* ออก 2 ตัว */}
                       <td className="px-3 py-2.5 text-center font-mono font-bold">
                         {row.hasActual ? (
-                          <span className={row.hit2 ? "text-emerald-400" : "text-slate-400"}>
+                          <span className={row.hit2 ? "text-emerald-400" : "text-[#1E2229]"}>
                             {row.actual2a || "—"}
                             {row.actual2b && row.actual2b !== row.actual2a && (
                               <> · <span className="text-purple-400">{row.actual2b}</span></>
                             )}
                           </span>
                         ) : (
-                          <span className="text-slate-700 text-[10px]">รอผล</span>
+                          <span className="text-[#1E2229] text-[10px]">รอผล</span>
                         )}
                       </td>
 
                       {/* ผล */}
                       <td className="px-3 py-2.5 text-center">
                         {!row.hasActual ? (
-                          <span className="text-[10px] text-slate-700">⏳</span>
+                          <span className="text-[10px] text-[#1E2229]">⏳</span>
                         ) : row.hit3 || row.hit2 ? (
                           <span className="text-emerald-400 font-bold">✓</span>
                         ) : (
-                          <span className="text-slate-700">✗</span>
+                          <span className="text-[#1E2229]">✗</span>
                         )}
                       </td>
                     </tr>
@@ -513,31 +576,21 @@ export default async function LotteryPageContent({
               </table>
             </div>
 
-            {/* สรุปอัตราการทำนาย */}
+            {/* สรุปสถิติ — แสดงบริบทแทนเปอร์เซ็นต์ */}
             {predRows.filter((r) => r.hasActual).length > 0 && (() => {
               const done = predRows.filter((r) => r.hasActual);
               const hits = done.filter((r) => r.hit3 || r.hit2).length;
-              const pct = Math.round((hits / done.length) * 100);
+              const poolSize = config.show3Digit ? "1,000" : "100";
               return (
-                <div className="border-t border-[#3D2060] px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
-                  <p className="text-[11px] text-slate-500">
-                    วิเคราะห์ถูก{" "}
-                    <span className="text-slate-300 font-bold">
-                      {hits}/{done.length}
-                    </span>{" "}
-                    งวด
+                <div className="border-t border-[#FFD6E7] px-4 py-3">
+                  <p className="text-[11px] text-[#8A94A6] leading-relaxed">
+                    📌 ใน {done.length} งวดล่าสุด มีเลขแนะนำถูกอย่างน้อย 1 ตัว{" "}
+                    <span className="text-emerald-400 font-bold">{hits} งวด</span>
+                    {" "}· แต่ละงวดแนะนำ{" "}
+                    <span className="text-[#1E2229] font-bold">5 เลข</span>
+                    {" "}จาก pool{" "}
+                    <span className="text-[#1E2229] font-bold">{poolSize} ชุด</span>
                   </p>
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-24 bg-[#120820] rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-emerald-500 rounded-full"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                    <span className="text-[11px] text-slate-400 font-mono">
-                      {pct}%
-                    </span>
-                  </div>
                 </div>
               );
             })()}
@@ -548,34 +601,34 @@ export default async function LotteryPageContent({
       {/* ── Recent results table ────────────────────────── */}
       {results.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-base font-bold text-slate-200">📋 ผลย้อนหลัง</h2>
-          <div className="bg-[#1E1040] border border-[#3D2060] rounded-2xl overflow-hidden">
+          <h2 className="text-base font-bold text-[#1E2229]">📋 ผลย้อนหลัง</h2>
+          <div className="bg-white shadow-sm border border-[#FFD6E7] rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#3D2060]">
-                    <th className="px-3 py-2.5 text-left text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                  <tr className="border-b border-[#FFD6E7]">
+                    <th className="px-3 py-2.5 text-left text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                       วันที่
                     </th>
-                    <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                    <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                       รางวัลที่ 1
                     </th>
                     {config.show3Digit && (
-                      <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                      <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                         {config.id === "thai" ? "ท้าย 3 ตัว (รางวัลที่ 1)" : "เลข 3 ตัว"}
                       </th>
                     )}
                     {config.hasBottomPrize ? (
                       <>
-                        <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                        <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                           2 ตัวบน
                         </th>
-                        <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                        <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                           2 ตัวล่าง
                         </th>
                       </>
                     ) : (
-                      <th className="px-3 py-2.5 text-center text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                      <th className="px-3 py-2.5 text-center text-[11px] text-[#8A94A6] font-medium whitespace-nowrap">
                         เลข 2 ตัว
                       </th>
                     )}
@@ -585,14 +638,14 @@ export default async function LotteryPageContent({
                   {results.slice(0, 10).map((r, i) => (
                     <tr
                       key={`${r.date}-${i}`}
-                      className={`border-b border-[#3D2060]/50 last:border-0 ${
-                        i === 0 ? "bg-[#A855F7]/5" : ""
+                      className={`border-b border-[#FFD6E7] last:border-0 ${
+                        i === 0 ? "bg-[#F9AAC0]/5" : ""
                       }`}
                     >
-                      <td className="px-3 py-2.5 text-slate-400 whitespace-nowrap text-xs">
+                      <td className="px-3 py-2.5 text-[#1E2229] whitespace-nowrap text-xs">
                         {r.date}
                       </td>
-                      <td className="px-3 py-2.5 text-center font-mono text-slate-300 text-xs">
+                      <td className="px-3 py-2.5 text-center font-mono text-[#1E2229] text-xs">
                         {r.prize1 || "—"}
                       </td>
                       {config.show3Digit && (
