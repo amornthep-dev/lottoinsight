@@ -1,5 +1,3 @@
-import { cacheLife } from "next/cache";
-
 const SHEET_ID = "1NW1ov_JkMeyCOAQTIRNhqBhBDyc15r2N1Av0Q0R1bc4";
 
 export interface SheetResult {
@@ -33,9 +31,6 @@ function parseCSV(csv: string): Record<string, string>[] {
 export async function fetchSheetResults(
   sheetGid: number
 ): Promise<SheetResult[]> {
-  "use cache";
-  cacheLife("minutes");
-
   try {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${sheetGid}`;
     const res = await fetch(url, {
@@ -74,9 +69,6 @@ export async function fetchSheetResults(
 export async function fetchPredictions(): Promise<
   Record<string, string>[]
 > {
-  "use cache";
-  cacheLife("minutes");
-
   try {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=172077655`;
     const res = await fetch(url, {
