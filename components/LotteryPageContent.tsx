@@ -92,16 +92,20 @@ export default async function LotteryPageContent({
   // กรองเฉพาะ lottery ที่ตรงกับหน้านี้ แล้ว join กับ actual results
   const predictions = allPredictions.filter((p) => p.lottery === config.id);
 
-  // แปลงวันที่จาก Sheets ให้เป็น AD เต็ม เช่น "23/5/69" → "23/5/2026"
-  // รองรับทั้ง: "23/5/69" (BE ย่อ), "23/5/2569" (BE เต็ม), "23/5/2026" (AD)
+  // แปลงวันที่จาก Sheets ให้ตรงกับ format Supabase: "23/5/2026"
+  // รองรับ: "23/5/69" (BE ย่อ), "23/5/2569" (BE เต็ม), "23/5/2026" (AD)
+  // ใช้ parseInt ทุก part เพื่อกำจัด leading zero เช่น "03" → 3
   function normalizePredDate(d: string): string {
     const parts = d.split("/");
     if (parts.length !== 3) return d;
-    const [day, month, year] = parts;
-    const y = parseInt(year);
-    if (y < 100) return `${day}/${month}/${y + 2500 - 543}`;  // BE ย่อ → AD
-    if (y > 2400) return `${day}/${month}/${y - 543}`;         // BE เต็ม → AD
-    return d;                                                   // AD แล้ว
+    const dayNum = parseInt(parts[0]);
+    const monthNum = parseInt(parts[1]);
+    const y = parseInt(parts[2]);
+    let adYear: number;
+    if (y < 100) adYear = y + 2500 - 543;       // BE ย่อ เช่น 69 → 2026
+    else if (y > 2400) adYear = y - 543;          // BE เต็ม เช่น 2569 → 2026
+    else adYear = y;                              // AD แล้ว
+    return `${dayNum}/${monthNum}/${adYear}`;
   }
 
   // สร้าง map จาก date → actual result (ใช้ date เป็น key)
